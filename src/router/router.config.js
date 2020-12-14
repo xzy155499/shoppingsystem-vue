@@ -7,6 +7,9 @@ import HomePage from '../view/homePage/HomePage'
 
 import EmpList from "../components/emp/emplist.vue";
 import MenuList from "../components/menu/menulist.vue";
+import GoodsList from "../components/goods/goodslist.vue";
+import GoodsParentTypeList from "../components/goods/goodstypelist";
+import WarehouseList from "../components/ware/warehouse";
 
 
 Vue.use(VueRouter)
@@ -39,6 +42,15 @@ export default new VueRouter({
         {
           path: '/shoppingsystem/menulist', component: MenuList,
         },
+        {
+          path: "/goods", component: GoodsList
+        },
+        {
+          path: "/goodstype", component: GoodsParentTypeList
+        },
+        {
+          path: "/warehouse", component: WarehouseList
+        }
       ]
     },
   ]
