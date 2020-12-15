@@ -1,0 +1,207 @@
+<template>
+  <el-row class="home" :gutter="20">
+    <el-col :span="9" style="margin-top: 20px">
+      <!-- 个人信息 -->
+      <!--shadow属性设置卡片阴影出现的时机-->
+      <el-card shadow='hover'>
+        <div class="user">
+          <img src="../../assets/snjz.gif" />
+          <div class="userinfo">
+            <p class="name">岁纳京子</p>
+            <p class="access">超级管理员</p>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <div class="login-info" align="center">
+          <table>
+            <tr>
+              <td><p>上次登录时间：</p></td>
+              <td><span>2020-12-9</span></td>
+            </tr>
+            <tr>
+              <td><p>上次登录地点：</p></td>
+              <td><span>长沙</span></td>
+            </tr>
+          </table>
+        </div>
+      </el-card>
+
+      <!-- 购买情况 -->
+      <el-card style="height: 450px ; margin-top: 20px" shadow="hover">
+        <el-table :data="tableData">
+          <el-table-column show-overflow-tooltip v-for="(val, key) in tableLabel" :key="key" :prop="key"
+                           :label="val"></el-table-column>
+        </el-table>
+      </el-card>
+
+    </el-col>
+
+    <el-col :span="15" style="margin-top: 20px">
+      <!--  本月的订单情况 -->
+      <div class="num">
+        <el-card  shadow="hover" v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0}">
+          <i class="icon" :class="`el-icon-${item.icon}`" :style="{ background: item.color }"></i>
+          <div class="detail">
+            <p class="num">￥ {{ item.value }}</p>
+            <p class="txt">{{ item.name }}</p>
+          </div>
+        </el-card>
+      </div>
+      <!-- 全年的销售情况 -->
+      <el-card style="height: 290px" shadow="hover">
+      </el-card>
+
+      <div class="graph">
+        <!-- 活跃用户情况 -->
+        <el-card style="height: 270px" shadow="hover">
+        </el-card>
+        <!-- 销售情况 -->
+        <el-card style="height: 270px" shadow="hover">
+        </el-card>
+
+      </div>
+
+    </el-col>
+
+  </el-row>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        countData: [
+          {
+            name: '今日支付订单',
+            value: 176,
+            icon: 's-claim',
+            color: '#2ec7c9'
+          },
+          {
+            name: '今日收藏订单',
+            value: 99,
+            icon: 'star-on',
+            color: '#ffb980'
+          },
+          {
+            name: '今日未支付订单',
+            value: 62,
+            icon: 's-release',
+            color: '#5ab1ef'
+          },
+          {
+            name: '本月支付订单',
+            value: 1086,
+            icon: 's-claim',
+            color: '#2ec7c9'
+          },
+          {
+            name: '本月收藏订单',
+            value: 210,
+            icon: 'star-on',
+            color: '#ffb980'
+          },
+          {
+            name: '本月未支付订单',
+            value: 243,
+            icon: 's-release',
+            color: '#5ab1ef'
+          }
+        ],
+        tableData: [],
+        tableLabel: {
+          name: '商品',
+          todayBuy: '今日购买',
+          monthBuy: '本月购买',
+          totalBuy: '总购买'
+        }
+      }
+    },
+    methods: {
+      getTableData() {
+
+      }
+
+
+    },
+    //一进组件就会去请求后端接口 获取首页数据
+    created() {
+      this.getTableData()
+    }
+
+  }
+
+</script>
+
+<style>
+  .home .user {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .home img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 40px;
+  }
+  .name {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  .access {
+    color: #999999;
+  }
+
+  .login-info p {
+    line-height: 26px;
+    font-size: 14px;
+    color: #999999;
+  }
+  .login-info span {
+    color: #666666;
+    font-size: 14px;
+    margin-left: 50px;
+  }
+  .num{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .num .el-card {
+    width: 32%;
+    margin-bottom: 20px;
+  }
+  .num .icon {
+    font-size: 30px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    color: #fff;
+  }
+  .detail {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .detail .num {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  .detail .txt {
+    font-size: 14px;
+    text-align: center;
+    color: #999999;
+  }
+  .graph {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .graph .el-card {
+    width: 48%;
+  }
+</style>
