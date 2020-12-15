@@ -3,6 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="3">
         <el-button @click="show">添加仓库</el-button>
+        <el-button @click="show">地图一览</el-button>
       </el-col>
       <el-col :span="6" :offset="6" >
         <el-input style="width: 250px;" clearable   v-model="search" placeholder="输入关键字搜索">
@@ -83,6 +84,16 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="地图一览页面" :visible.sync="addBDMapFormVisible">
+    <!--将编辑页面子组件加入到列表页面 -->
+    <BDMap ref="showMap">
+      <div slot="marker-slot-label"></div>
+      <div slot="center-slot"></div>
+    </BDMap>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="hideaddBDMapFormVisible">隐藏</el-button>
+    </div>
+    </el-dialog>
 
     <el-dialog title="修改仓库页面" :visible.sync="upddialogFormVisible" >
       <!--将编辑页面子组件加入到列表页面 -->

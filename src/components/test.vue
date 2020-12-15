@@ -13,19 +13,21 @@
         </bm-marker>
       </div>
       </slot>
+      <slot name="marker-slot-label">
       <div>
         <bm-marker :position="center" :dragging="true" @dragging="getPosition">
           <bm-label :content="pdrr" :labelStyle="{color: 'red', fontSize : '10px'}"
                     :offset="{width: -25, height: 30}"></bm-label>
-          <bm-context-menu>
-            <bm-context-menu-item :callback="getPosition" text="获取坐标"></bm-context-menu-item>
-          </bm-context-menu>
+
           <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
         </bm-marker>
       </div>
+      </slot>
     </baidu-map>
+    <slot name="center-slot">
     <a>{{center.lng}}</a>
     <a>,{{center.lat}}</a>
+    </slot>
 <!--    <el-button @click="getpdrr">获取坐标</el-button>-->
   </div>
 </template>
