@@ -6,6 +6,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Main from './view/Main.vue'
 
 import Axios from 'axios'
+import BaiduMap from 'vue-baidu-map'
+import $ from 'jquery/src/jquery'
+
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: 'tS9gxkjNh10upXP1PUoLMWDnCu4GKK5x'
+})
+
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
