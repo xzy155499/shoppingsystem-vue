@@ -1,8 +1,8 @@
 <template>
   <div>
     <slot name="button-slot"></slot>
-    <baidu-map class="map" :center="center" :zoom="15"
-               style="height: 600px;width: 1000px">
+    <baidu-map class="map" :center="center1" :zoom="15"
+               style="height: 540px;width: 100%">
       <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
       <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
       <slot name="marker-slot">
@@ -50,7 +50,12 @@
         center: {
           lng: 116.424,
           lat: 39.915
-        }
+        },
+        center1: {
+          lng: 116.424,
+          lat: 39.915
+        },
+        cs:{}
       }
     },
     methods: {
@@ -79,7 +84,8 @@
           'url': url,
           'dataType': 'jsonp',
           'success': function (data) {
-            _this.pdrr=data.result.addressComponent.city
+            _this.cs=data.result.addressComponent
+             console.log(_this.cs)
           }
         })
       },getCenter(){

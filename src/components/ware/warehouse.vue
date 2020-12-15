@@ -5,9 +5,9 @@
         <el-button @click="show">添加仓库</el-button>
       </el-col>
       <el-col :span="6" :offset="6" >
-        <el-input style="width: 250px;" clearable @input="que1"  v-model="search" placeholder="输入关键字搜索">
+        <el-input style="width: 250px;" clearable   v-model="search" placeholder="输入关键字搜索">
 
-        </el-input><el-button>查询</el-button>
+        </el-input><el-button @click="que1">查询</el-button>
       </el-col>
     </el-row>
     <br/>
@@ -28,8 +28,8 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="warning" icon="el-icon-edit" @click="updshow(scope.row)"  plain circle></el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.pId)" plain circle ></el-button>
-          <el-button  icon="el-icon-search" @click="que(scope.row.pId)" circle plain></el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.wId)" plain circle ></el-button>
+          <el-button  icon="el-icon-search" @click="que(scope.row.wId)" circle plain></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,10 +71,9 @@
 
 
 
-    <el-dialog title="添加仓库坐标选择页面" :visible.sync="addBDMapFormVisible" @getCenter="getCenter(center)">
+    <el-dialog title="添加仓库坐标选择页面" :visible.sync="addBDMapFormVisible">
       <!--将编辑页面子组件加入到列表页面 -->
-
-      <BDMap ref="myzuzjian">
+      <BDMap ref="addMap">
 <!--        <el-button slot="button-slot" @click="test">测试</el-button>-->
         <div slot="marker-slot"></div>
       </BDMap>
@@ -92,34 +91,35 @@
       </el-input>
       <br>
       <br>
-      <el-input placeholder="请输入内容" v-model="describe">
+      <el-input placeholder="请输入内容" v-model="note">
         <template slot="prepend">请输入仓库描述:</template>
+      </el-input>
+      <br>
+      <br>
+      <el-input placeholder="请输入内容" v-model="detailed">
+        <template slot="prepend">请输入仓库详细地址:</template>
+      </el-input>
+      <br>
+      <br>
+      <el-input placeholder="请输入内容" v-model="showCenter" :disabled="true">
+        <template slot="prepend">请选择仓库坐标:</template>
+        <el-button slot="append" icon="el-icon-search" @click="updBDMapFormVisibleShow"></el-button>
       </el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="hide">取 消</el-button>
         <el-button type="primary" @click="upd">确 定</el-button>
       </div>
     </el-dialog>
-
-
-
-    <el-dialog title="修改仓库页面" :visible.sync="upddialogFormVisible" >
+    <el-dialog title="修改仓库坐标选择页面" :visible.sync="updBDMapFormVisible" >
       <!--将编辑页面子组件加入到列表页面 -->
-      <el-input placeholder="请输入内容" v-model="name">
-        <template slot="prepend">请输入仓库名称:</template>
-      </el-input>
-      <br>
-      <br>
-      <el-input placeholder="请输入内容" v-model="describe">
-        <template slot="prepend">请输入仓库描述:</template>
-      </el-input>
+      <BDMap ref="updMap">
+        <div slot="marker-slot"></div>
+      </BDMap>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="hide">取 消</el-button>
-        <el-button type="primary" @click="upd">确 定</el-button>
+        <el-button @click="updBDMapFormVisible=false">取 消</el-button>
+        <el-button type="primary" @click="updBDM">确 定</el-button>
       </div>
     </el-dialog>
-
-
 
 
     <el-dialog title="仓库详情页面" :visible.sync="quedialogFormVisible" >
@@ -127,7 +127,7 @@
         <el-col :span="3">
           <el-button @click="queadddialogFormVisible = true">添加仓库</el-button>
         </el-col>
-        <el-col :span="6" :offset="6" >
+        <el-col :span="6" :offset="6">
           <el-input style="width: 250px;" clearable v-model="search" placeholder="输入关键字搜索">
             <el-button  slot="addgoods">添加</el-button>
           </el-input>
@@ -143,49 +143,10 @@
         </el-table-column>
         <el-table-column prop="cDescribe" label="仓库描述">
         </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="warning" icon="el-icon-edit" @click="queupd(scope.row)"  plain circle></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="quedel(scope.row.cId)" plain circle ></el-button>
-          </template>
-        </el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button @click="quedialogFormVisible=false">取 消</el-button>
         <el-button type="primary" @click="upd">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog title="仓库详情添加页面" :visible.sync="queadddialogFormVisible" >
-      <!--将编辑页面子组件加入到列表页面 -->
-      <el-input placeholder="请输入内容" v-model="quename">
-        <template slot="prepend">请输入仓库名称:</template>
-      </el-input>
-      <br>
-      <br>
-      <el-input placeholder="请输入内容" v-model="quedescribe">
-        <template slot="prepend">请输入仓库描述:</template>
-      </el-input>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="queadddialogFormVisible=false">取 消</el-button>
-        <el-button type="primary" @click="queadd">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog title="仓库详情修改页面" :visible.sync="queupddialogFormVisible" >
-      <!--将编辑页面子组件加入到列表页面 -->
-      <el-input placeholder="请输入内容" v-model="quename">
-        <template slot="prepend">请输入仓库名称:</template>
-      </el-input>
-      <br>
-      <br>
-      <el-input placeholder="请输入内容" v-model="quedescribe">
-        <template slot="prepend">请输入仓库描述:</template>
-      </el-input>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="quehide">取 消</el-button>
-        <el-button type="primary" @click="queupd1">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -204,9 +165,8 @@
         adddialogFormVisible: false,
         upddialogFormVisible:false,
         quedialogFormVisible:false,
-        queadddialogFormVisible:false,
-        queupddialogFormVisible:false,
         addBDMapFormVisible:false,
+        updBDMapFormVisible:false,
         name:"",
         describe:"",
         quename:"",
@@ -260,13 +220,14 @@
           }else{
             _this.$message.error('添加失败');
           }
+          _this.addBDM();
           _this.adddialogFormVisible=false;
           _this.getData();
         }).catch(function (error) {
           alert(error)
         })
       },del(id){
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        this.$confirm('此操作将永久删除该仓库, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -297,9 +258,20 @@
       },upd(){
         var _this = this;
         var params = new URLSearchParams();
-        params.append("pId",this.wid);
-        params.append("pName",this.name);
-        params.append("pDescribe",this.describe);
+        var cs = this.$refs.updMap.cs;
+        this.province=cs.province;
+        this.city=cs.city;
+        this.county=cs.district;
+        params.append("wName",this.name);
+        params.append("wCoordinates",this.showCenter);
+        params.append("wNote",this.note);
+        params.append("wProvince",this.province);
+        params.append("wCity",this.city);
+        params.append("wCounty",this.county);
+        params.append("wDetailed",this.detailed);
+        params.append("wId",this.wid);
+
+
         this.$axios.post("updWarehouse.action",params).then(function (result) {
           if (result.data!=0){
             _this.$message({
@@ -316,9 +288,11 @@
         })
       },updshow(row){
         this.upddialogFormVisible=true;
-        this.name =row.pName;
-        this.describe=row.pDescribe;
-        this.wid=row.pId;
+        this.name =row.wName;
+        this.note=row.wNote;
+        this.detailed=row.wDetailed;
+        this.showCenter=row.wCoordinates;
+        this.wid =row.wId;
       },que(id){
         this.wid=id;
         var _this = this;
@@ -330,90 +304,15 @@
         }).catch(function (error) {
           alert(error)
         })
-      },queadd(){
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("pId",this.wid);
-        params.append("cName",this.quename);
-        params.append("cDescribe",this.quedescribe);
-        this.$axios.post("addWarehouseGoods.action",params).then(function (result) {
-          if (result.data!=0){
-            _this.$message({
-              type: 'success',
-              message: '添加成功!'
-            });
-          }else{
-            _this.$message.error('添加失败');
-          }
-          _this.queadddialogFormVisible=false;
-          _this.que(_this.wid);
-        }).catch(function (error) {
-          alert(error)
-        })
-      },quedel(id){
-        this.$confirm('此操作将永久删除该仓库, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          var _this = this;
-          var params = new URLSearchParams();
-          params.append("id",id);
-          this.$axios.post("delWarehouseGoods.action",params).then(function (result) {
-            if (result.data!=0){
-              _this.$message({
-                type: 'success',
-                message: '删除成功!'
-              });
-            }else{
-              _this.$message.error('删除失败');
-            }
-            _this.que(_this.wid);
-          }).catch(function (error) {
-            alert(error)
-          })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },queupd(row){
-        this.quename= row.cName;
-        this.quedescribe=row.cDescribe;
-        this.wgid=row.cId;
-        this.queupddialogFormVisible=true;
       },
       quehide(){
         this.quename="";
         this.quedescribe="";
         this.queupddialogFormVisible=false;
         this.queadddialogFormVisible=false
-      },queupd1(){
-        var _this = this;
-        var params = new URLSearchParams();
-
-        params.append("cId",this.wgid);
-        params.append("pId",0);
-        params.append("cName",this.quename);
-        params.append("cDescribe",this.quedescribe);
-        this.$axios.post("updWarehouseGoods.action",params).then(function (result) {
-          if (result.data!=0){
-            _this.$message({
-              type: 'success',
-              message: '修改成功!'
-            });
-          }else{
-            _this.$message.error('修改失败');
-          }
-          _this.que(_this.wid);
-          _this.quehide();
-        }).catch(function (error) {
-          alert(error)
-        })
       },addBDM(){
         var _this = this;
-        var center =this.$refs.myzuzjian.center;
+        var center =this.$refs.addMap.center;
         var lng = center.lng;
         var lat = center.lat;
         this.showCenter=center.lng+","+center.lat
@@ -422,7 +321,6 @@
           'url': url,
           'dataType': 'jsonp',
           'success': function (data) {
-            console.log(data)
             _this.province=data.result.addressComponent.province
             _this.city=data.result.addressComponent.city
             _this.county=data.result.addressComponent.district
@@ -441,12 +339,33 @@
       },que1(){
         this.index=1;
         this.getData();
+      },updBDMapFormVisibleShow(){
+        this.updBDMapFormVisible=true;
+        var _this = this;
+        var center={}
+        //延时加载
+        this.$nextTick(()=> {
+          var num =_this.showCenter.indexOf(",");
+          var lng = _this.showCenter.substr(0,num);
+          var lat = _this.showCenter.substr(num+1);
+          center = {"lng":lng,"lat":lat}
+          //console.log(_this.$refs.updMap.center)
+        })
+        setTimeout(function () {
+           _this.$refs.updMap.center=center;
+           _this.$refs.updMap.center1=center;
+        },500)
+      },updBDM(){
+        var center = this.$refs.updMap.center;
+        this.showCenter = center.lng+","+center.lat
+        this.updBDMapFormVisible=false;
+        this.$refs.updMap.getpdrr();
       },
       test(){
 
+
       }
-    },
-    created: function () {
+    },beforeMount:function (){
       this.getData();
     },components:{
       BDMap:BDMap

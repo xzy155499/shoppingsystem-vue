@@ -43,13 +43,13 @@ export default new VueRouter({
           path: '/shoppingsystem/menulist', component: MenuList,
         },
         {
-          path: "/goods", component: GoodsList
+          path: "/shoppingsystem/goods", component: GoodsList
         },
         {
-          path: "/goodstype", component: GoodsParentTypeList
+          path: "/shoppingsystem/goodstype", component: GoodsParentTypeList
         },
         {
-          path: "/warehouse", component: WarehouseList
+          path: "/shoppingsystem/warehouse", component: WarehouseList
         }
       ]
     },
