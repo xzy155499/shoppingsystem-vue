@@ -3,7 +3,9 @@
     <el-row :gutter="20">
       <el-col :span="3">
         <el-button @click="show">添加仓库</el-button>
-        <el-button @click="show">地图一览</el-button>
+      </el-col>
+      <el-col :span="1">
+        <el-button @click="showBDMapFormVisible=true">地图一览</el-button>
       </el-col>
       <el-col :span="6" :offset="6" >
         <el-input style="width: 250px;" clearable   v-model="search" placeholder="输入关键字搜索">
@@ -75,7 +77,6 @@
     <el-dialog title="添加仓库坐标选择页面" :visible.sync="addBDMapFormVisible">
       <!--将编辑页面子组件加入到列表页面 -->
       <BDMap ref="addMap">
-<!--        <el-button slot="button-slot" @click="test">测试</el-button>-->
         <div slot="marker-slot"></div>
       </BDMap>
       <div slot="footer" class="dialog-footer">
@@ -84,14 +85,30 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="地图一览页面" :visible.sync="addBDMapFormVisible">
+    <el-dialog title="地图一览页面" :visible.sync="showBDMapFormVisible">
     <!--将编辑页面子组件加入到列表页面 -->
-    <BDMap ref="showMap">
-      <div slot="marker-slot-label"></div>
-      <div slot="center-slot"></div>
-    </BDMap>
+      <baidu-map class="map" :center="center" :zoom="13"
+                 style="height: 540px;width: 100%">
+        <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :showAddressBar="true" :autoLocation="true"></bm-geolocation>
+        <bm-city-list anchor="BMAP_ANCHOR_TOP_LEFT"></bm-city-list>
+        <slot name="marker-slot">
+          <div v-for="da in data" >
+            <bm-marker :position="da.position" :dragging="false" @click="infoWindowOpen(da.id)">
+              <bm-info-window :show="da.show" @close="infoWindowClose(da.id)" @open="infoWindowOpen(da.id)">
+                <el-card class="box-card">
+                    <span style="color: #303133;font-size: 24px;display:block;text-align:center">{{da.name}}</span>
+                    <br>
+                    <span style="color: #909399;font-size: 20px">{{da.text}}</span>
+                </el-card>
+              </bm-info-window>
+            </bm-marker>
+          </div>
+        </slot>
+        <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+      </baidu-map>
+
     <div slot="footer" class="dialog-footer">
-      <el-button @click="hideaddBDMapFormVisible">隐藏</el-button>
+      <el-button @click="showBDMapFormVisible=false">隐藏</el-button>
     </div>
     </el-dialog>
 
@@ -134,25 +151,14 @@
 
 
     <el-dialog title="仓库详情页面" :visible.sync="quedialogFormVisible" >
-      <el-row :gutter="20">
-        <el-col :span="3">
-          <el-button @click="queadddialogFormVisible = true">添加仓库</el-button>
-        </el-col>
-        <el-col :span="6" :offset="6">
-          <el-input style="width: 250px;" clearable v-model="search" placeholder="输入关键字搜索">
-            <el-button  slot="addgoods">添加</el-button>
-          </el-input>
-        </el-col>
-      </el-row>
-      <br/><br/>
       <!--   -->
       <el-table :data="childtableData"
                 border>
         <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop="cName" label="仓库名称">
+        <el-table-column prop="goods.gName" label="商品名称">
         </el-table-column>
-        <el-table-column prop="cDescribe" label="仓库描述">
+        <el-table-column prop="wgNum" label="商品数量">
         </el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
@@ -178,12 +184,12 @@
         quedialogFormVisible:false,
         addBDMapFormVisible:false,
         updBDMapFormVisible:false,
+        showBDMapFormVisible:false,
         name:"",
         describe:"",
         quename:"",
         quedescribe:"",
         wid:0,
-        wgid:0,
         position: {lng: 116.404, lat: 39.915},
         province:"",
         city:"",
@@ -191,7 +197,12 @@
         showCenter:"",
         note:"",
         detailed:"",
-        index:1
+        index:1,
+        data:[],  //仓库坐标
+        center:{
+          lng: 116.424,
+          lat: 39.915
+        }
       }
     },
     methods: {
@@ -205,6 +216,23 @@
         }).catch(function (error) {
           alert(error)
         })
+          var params = new URLSearchParams();
+          params.append("rows",99999999);
+          this.$axios.post("queryAllWarehouse.action",params).then(function (result) {
+            var data = [];
+            var row =result.data.rows;
+            for (let i = 0; i < row.length; i++) {
+              var index = row[i].wCoordinates.indexOf(',');
+              var lng = row[i].wCoordinates.substr(0,index);
+              var lat = row[i].wCoordinates.substr(index+1);
+              data.push({"position": {"lng": lng, "lat": lat}, "id": row[i].wId, "text": row[i].wDetailed, "show": false,"name":row[i].wName})
+              //data[row[i]]={"position": {"lng": lng, "lat": lat}, "id": row[i].wId, "text": row[i].wDetailed, "show": false,"name":row[i].wName}
+            }
+            _this.data=data;
+            console.log(data)
+          }).catch(function (error) {
+            alert(error)
+          })
       },
       show(){
         this.adddialogFormVisible=true;
@@ -269,10 +297,12 @@
       },upd(){
         var _this = this;
         var params = new URLSearchParams();
-        var cs = this.$refs.updMap.cs;
-        this.province=cs.province;
-        this.city=cs.city;
-        this.county=cs.district;
+        if (this.$refs.updMap!=undefined){
+          var cs = this.$refs.updMap.cs;
+          this.province=cs.province;
+          this.city=cs.city;
+          this.county=cs.district;
+        }
         params.append("wName",this.name);
         params.append("wCoordinates",this.showCenter);
         params.append("wNote",this.note);
@@ -281,8 +311,6 @@
         params.append("wCounty",this.county);
         params.append("wDetailed",this.detailed);
         params.append("wId",this.wid);
-
-
         this.$axios.post("updWarehouse.action",params).then(function (result) {
           if (result.data!=0){
             _this.$message({
@@ -304,23 +332,20 @@
         this.detailed=row.wDetailed;
         this.showCenter=row.wCoordinates;
         this.wid =row.wId;
+        this.province=row.wProvince;
+        this.city=row.wCity;
+        this.county =row.wCounty;
       },que(id){
         this.wid=id;
         var _this = this;
         var params = new URLSearchParams();
-        params.append("id",id);
+        params.append("wId",id);
         this.$axios.post("queryAllWarehouseGoods.action",params).then(function (result) {
-          _this.childtableData=result.data;
+          _this.childtableData=result.data.rows;
           _this.quedialogFormVisible=true;
         }).catch(function (error) {
           alert(error)
         })
-      },
-      quehide(){
-        this.quename="";
-        this.quedescribe="";
-        this.queupddialogFormVisible=false;
-        this.queadddialogFormVisible=false
       },addBDM(){
         var _this = this;
         var center =this.$refs.addMap.center;
@@ -360,7 +385,6 @@
           var lng = _this.showCenter.substr(0,num);
           var lat = _this.showCenter.substr(num+1);
           center = {"lng":lng,"lat":lat}
-          //console.log(_this.$refs.updMap.center)
         })
         setTimeout(function () {
            _this.$refs.updMap.center=center;
@@ -371,10 +395,32 @@
         this.showCenter = center.lng+","+center.lat
         this.updBDMapFormVisible=false;
         this.$refs.updMap.getpdrr();
+      },infoWindowClose(index) {
+        for (let i = 0; i < this.data.length; i++) {
+          if (index==this.data[i].id){
+            index=i
+          }
+        }
+        var pdrr = this.data[index];
+        pdrr.show = false;
+        this.data.splice(index, 1, pdrr)
       },
-      test(){
-
-
+      infoWindowOpen(index) {
+        for (let i = 0; i < this.data.length; i++) {
+          if (index==this.data[i].id){
+            index=i
+          }
+        }
+        var pdrr = this.data[index];
+        pdrr.show = true;
+        this.data.splice(index, 1, pdrr)
+      },
+      getPosition(e) {
+        var _this = this;
+        this.center = {
+          lng: `${e.point.lng}`,
+          lat: `${e.point.lat}`
+        }
       }
     },beforeMount:function (){
       this.getData();
@@ -383,6 +429,5 @@
   }
   }
 </script>
-
 <style>
 </style>

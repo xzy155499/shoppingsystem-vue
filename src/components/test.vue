@@ -18,11 +18,10 @@
         <bm-marker :position="center" :dragging="true" @dragging="getPosition">
           <bm-label :content="pdrr" :labelStyle="{color: 'red', fontSize : '10px'}"
                     :offset="{width: -25, height: 30}"></bm-label>
-
-          <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
         </bm-marker>
       </div>
       </slot>
+      <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
     </baidu-map>
     <slot name="center-slot">
     <a>{{center.lng}}</a>
@@ -92,7 +91,27 @@
         })
       },getCenter(){
         this.$emit("getCenter",this.center)
+      },getData(){
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows",99999999);
+        this.$axios.post("queryAllWarehouse.action",params).then(function (result) {
+          var data = [];
+          var row =result.data.rows;
+          for (let i = 0; i < row.length; i++) {
+            var index = row[i].wCoordinates.indexOf(',');
+            var lng = row[i].wCoordinates.substr(0,index);
+            var lat = row[i].wCoordinates.substr(index+1);
+            data.push({"position": {"lng": lng, "lat": lat}, "id": row[i].wId, "text": row[i].wDetailed, "show": false,"name":row[i].wName})
+          }
+          _this.data=data;
+          console.log(data)
+        }).catch(function (error) {
+          alert(error)
+        })
       }
+    },beforeMount:function (){
+      this.getData();
     }
   }
 
