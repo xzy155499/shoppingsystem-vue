@@ -52,7 +52,7 @@
           <div class="r-content">
             <el-dropdown trigger="click" size="mini">
               <span class="el-dropdown-link">
-                <img src="../assets/snjz.gif" class="user"/>
+                <el-avatar :size="40" :src="JSONEmp.photo"></el-avatar>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
@@ -92,6 +92,7 @@
     },
     data() {
       return {
+        JSONEmp: {},
         nowTime: '',
         year: '',
         month: '',
@@ -222,7 +223,8 @@
       },
     },
     created: function () {
-      var emp = sessionStorage.getItem("emp");
+      this.JSONEmp = JSON.parse(sessionStorage.getItem('emp'));
+      var emp = this.JSONEmp;
       if (emp == undefined || emp == null || emp == '') {
         this.$router.push("/shoppingsystem/login");
       }else {

@@ -98,9 +98,14 @@
         params.append("role_id", this.role_id);
         var arr = [];
         this.$axios.post("queryMenuIdByRid.action", params).then(function (result) {
+
           result.data.forEach((item) => {
+            if (item==1 || item==2 || item==3 || item==4 || item==5 || item==6  ){
+              return
+            }
             arr.push(item)
           })
+
           _this.defKeys = arr;
         }).catch((error) => {
           alert(error)
@@ -135,7 +140,7 @@
         }).catch((error) => {
           alert(error)
         })
-        this.defKeys = []
+        //this.defKeys = []
         this.getRoleData();
         this.getMenuData();
       },

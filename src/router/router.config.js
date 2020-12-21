@@ -13,6 +13,12 @@ import GoodsList from "../components/goods/goodslist.vue";
 import GoodsParentTypeList from "../components/goods/goodstypelist";
 import WarehouseList from "../components/ware/warehouse";
 
+import Merchantslist from "../components/merchants/merchantslist";
+import MerchantsLogin from "../components/merchants/merchantsLogin"
+import MerchantsHome from '../view/homePage/HomePageMarehouse'
+import MerchantsView from "../components/merchants/merchantsView";
+
+import ShoppingCart from "../view/shopping/shoppingCart";
 
 Vue.use(VueRouter)
 
@@ -29,7 +35,7 @@ export default new VueRouter({
     {path: "/", redirect: "/shoppingsystem/login"},
     //登录路由
     {path: '/shoppingsystem/login', component: Login,},
-    //首页路由
+    //总店 首页路由
     {
       path: '/shoppingsystem/home', component: Home,
       children: [
@@ -64,9 +70,25 @@ export default new VueRouter({
         {
           path: "/shoppingsystem/warehouse",
           component: WarehouseList
+        },
+        {
+          path: "/shoppingsystem/merchantslist", component: Merchantslist
         }
       ]
     },
+    //商家路由
+    {
+      path: "/shoppingmerchants/merchantsLogin", component: MerchantsLogin
+    },
+    {
+      path: '/shoppingmerchants/merchantsHome', component: MerchantsHome,
+      children: [{
+          path: '/shoppingmerchants/merchantsView',
+          component: MerchantsView
+        }]
+    }, {
+      path: '/shopping/shoppingCart', component: ShoppingCart,
+    }
   ]
 })
 //3.定义路由处理器  VueRouter

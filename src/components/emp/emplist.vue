@@ -27,7 +27,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="photo" label="照片">
-        <el-avatar shape="square" :size="50" src="../src/assets/snjz.gif"></el-avatar>
+        <template slot-scope="scope">
+        <el-avatar shape="square" :size="50" :src="scope.row.photo"></el-avatar>
+        </template>
       </el-table-column>
       <el-table-column prop="emp_age" label="年龄" sortable>
       </el-table-column>
@@ -37,8 +39,8 @@
       </el-table-column>
       <el-table-column prop="account" label="账号">
       </el-table-column>
-      <el-table-column prop="pass" label="密码">
-      </el-table-column>
+<!--      <el-table-column prop="pass" label="密码">-->
+<!--      </el-table-column>-->
       <el-table-column prop="isdelete" label="情况">
         <template slot-scope="scope">
           <el-tag
@@ -183,7 +185,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        <!--
         <el-row>
           <el-col :span="12">
             <el-form-item label="账号：" prop="account">
@@ -197,7 +199,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        -->
         <el-row>
           <el-col>
             <el-form-item label="身份证号：" prop="id_number">
@@ -245,8 +247,8 @@
           id_number: '',
           phone: '',
           address: '',
-          account: '',
-          pass: '',
+          // account: '',
+          // pass: '',
         },
         //编辑员工表单数据
         editEmpForm: {},
@@ -266,18 +268,19 @@
             {required: true, message: '请输入身份证号码', trigger: 'blur'}
           ],
           phone: [
-            {required: true, message: '请输入联系电话', trigger: 'blur'}
+            {required: true, message: '请输入联系电话', trigger: 'blur'},
+            {min: 11, max: 11, message: '请输入11位数的号码', trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请选择地址信息', trigger: 'change'}
           ],
-          account: [
-            {required: true, message: '请输入账号', trigger: 'blur'},
-            {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
-          ],
-          pass: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ],
+          // account: [
+          //   {required: true, message: '请输入账号', trigger: 'blur'},
+          //   {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
+          // ],
+          // pass: [
+          //   {required: true, message: '请输入密码', trigger: 'blur'}
+          // ],
         }
       }
     },

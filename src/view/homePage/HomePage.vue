@@ -5,7 +5,7 @@
       <!--shadow属性设置卡片阴影出现的时机-->
       <el-card shadow='hover'>
         <div class="user">
-          <img src="../../assets/snjz.gif" />
+          <el-avatar :size="150" :src="JSONEmp.photo"></el-avatar>
           <div class="userinfo">
             <p class="name">{{JSONEmp.emp_name}}</p>
             <p class="access">{{role_name}}</p>
@@ -75,37 +75,37 @@
         countData: [
           {
             name: '今日支付订单',
-            value: 176,
+            value: 4,
             icon: 's-claim',
             color: '#2ec7c9'
           },
           {
             name: '今日收藏订单',
-            value: 99,
+            value: 3,
             icon: 'star-on',
             color: '#ffb980'
           },
           {
-            name: '今日未支付订单',
-            value: 62,
+            name: '今日新增用户',
+            value: 5,
             icon: 's-release',
             color: '#5ab1ef'
           },
           {
             name: '本月支付订单',
-            value: 1086,
+            value: 10,
             icon: 's-claim',
             color: '#2ec7c9'
           },
           {
             name: '本月收藏订单',
-            value: 210,
+            value: 14,
             icon: 'star-on',
             color: '#ffb980'
           },
           {
-            name: '本月未支付订单',
-            value: 243,
+            name: '本月新增用户',
+            value: 23,
             icon: 's-release',
             color: '#5ab1ef'
           }
@@ -138,10 +138,7 @@
     padding-bottom: 20px;
     margin-bottom: 20px;
   }
-  .home img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+  .home .el-avatar {
     margin-right: 40px;
   }
   .name {

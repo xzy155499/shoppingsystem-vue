@@ -21,9 +21,9 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-        <el-button type="warning" icon="el-icon-edit" @click="updshow(scope.row)"  plain circle></el-button>
-        <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.pId)" plain circle ></el-button>
-       <el-button  icon="el-icon-search" @click="que(scope.row.pId)" circle plain></el-button>
+          <el-button size="mini" type="warning" plain @click="updshow(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" plain @click="del(scope.row.pId)">删除</el-button>
+          <el-button  size="mini" type="primary" plain @click="que(scope.row.pId)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,8 +85,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="warning" icon="el-icon-edit" @click="queupd(scope.row)"  plain circle></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="quedel(scope.row.cId)" plain circle ></el-button>
+            <el-button size="mini" type="warning" plain @click="queupd(scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" plain @click="quedel(scope.row.cId)">删除</el-button>
          </template>
         </el-table-column>
       </el-table>
