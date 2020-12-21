@@ -5,10 +5,13 @@
     <!-- @click="drawer = true" -->
     <el-container style="height: 100%">
       <!-- 左边区域 -->
-      <el-aside :width="isCollapse  ? '65px' : '210px'">
+      <el-aside :width="isCollapse  ? '62px' : '210px'">
         <el-menu style="height: 969px;" :collapse="isCollapse" :unique-opened="true"
                  @select="handleSelect" :router="true" text-color="#fff" :default-active="activationIndex"
                  :collapse-transition="false" active-text-color="#ffd04b" background-color="#545c64">
+          <el-menu-item index="">
+            <h2>荣荣在线管理系统</h2>
+          </el-menu-item>
           <el-submenu :index="item.id+''" v-for="item in menus" :key="item.path">
             <template slot="title">
               <i :class="item.icon"></i>
@@ -28,13 +31,22 @@
       <el-container>
         <!-- 头部区域 -->
         <el-header>
+
           <!-- 菜单缩进按钮 -->
           <div class="l-content">
             <el-button plain icon="el-icon-menu" size="mini" @click="toggleCollapse"></el-button>
+            <el-button plain icon="el-icon-refresh-right" size="mini"></el-button>
+<!--            <i class="el-icon-menu" @click="toggleCollapse"></i>-->
           </div>
-          <div>
-            <span>{{ nowTime }}</span>
-            <span>{{ Day[new Date().getDay()] }}</span>
+          <div class="time">
+            <span>{{ year }}</span>
+            <small>年</small>
+            <span>{{ month }}</span>
+            <small>月</small>
+            <span>{{ date }}</span>
+            <small>日</small>
+            <small>{{ nowTime }}</small>
+            <small>{{ Day[new Date().getDay()] }}</small>
           </div>
 
           <div class="r-content">
@@ -50,6 +62,7 @@
           </div>
 
         </el-header>
+
         <!-- 中间区域 -->
         <el-main>
 
@@ -80,17 +93,21 @@
     data() {
       return {
         nowTime: '',
+        year: '',
+        month: '',
+        date: '',
         Day: [
-          "星期日",
-          "星期一",
-          "星期二",
-          "星期三",
-          "星期四",
-          "星期五",
-          "星期六",
+          "周日",
+          "周一",
+          "周二",
+          "周三",
+          "周四",
+          "周五",
+          "周六",
         ],
         //菜单数据
         menus: [],
+        emp_id: JSON.parse(sessionStorage.getItem('emp')).emp_id,
         editableTabsValue: "shoppingsystem/home",
         activationIndex: "0",
         isCollapse: false,
@@ -107,20 +124,21 @@
     methods: {
       //退出
       logOut() {
-        let _this = this;
-        localStorage.clear();
-        _this.$alert("退出成功！", "提示", {
+        sessionStorage.clear();
+        this.$alert("退出成功！", "提示", {
           confirmButtonText: 'ok'
         })
-        _this.$router.push("/shoppingsystem/login");
+        this.$router.push("/shoppingsystem/login");
       },
       //获取后端菜单数据信息
       getMenuData() {
         var _this = this;
-        this.$axios.post("queryAllMenu.action").then(function (result) {
+        var params = new URLSearchParams();
+        params.append("emp_id", this.emp_id);
+        this.$axios.post("queryAllMenu.action",params).then(function (result) {
           _this.menus = result.data;
         }).catch(function (error) {
-          alert(error)
+          console.log(error)
         })
       },
       //折叠菜单栏
@@ -194,14 +212,23 @@
         let hh = new Date(timeStamp).getHours() < 10 ? "0" + new Date(timeStamp).getHours() : new Date(timeStamp).getHours();
         let mm = new Date(timeStamp).getMinutes() < 10 ? "0" + new Date(timeStamp).getMinutes() : new Date(timeStamp).getMinutes();
         let ss = new Date(timeStamp).getSeconds() < 10 ? "0" + new Date(timeStamp).getSeconds() : new Date(timeStamp).getSeconds();
-        this.nowTime = year + "年" + month + "月" + date + "日" + " " + hh + ":" + mm + ':' + ss;
+        this.nowTime = " " + hh + ":" + mm + ':' + ss;
+        this.year = year;
+        this.month = month;
+        this.date = date;
       },
       nowTimes() {
         this.timeFormate(new Date());
       },
     },
     created: function () {
-      this.getMenuData();
+      var emp = sessionStorage.getItem("emp");
+      if (emp == undefined || emp == null || emp == '') {
+        this.$router.push("/shoppingsystem/login");
+      }else {
+        this.getMenuData();
+        this.$router.push("/shoppingsystem/home");
+      }
     },
   }
 </script>
@@ -263,7 +290,13 @@
     border-bottom: 1px solid #E6E6E6;
     text-align: center;
   }
-
+  .time{
+    color: #666;
+  }
+  .time span{
+    color: #666;
+    font-size: 20px;
+  }
 </style>
 
 

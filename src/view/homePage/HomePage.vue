@@ -7,8 +7,8 @@
         <div class="user">
           <img src="../../assets/snjz.gif" />
           <div class="userinfo">
-            <p class="name">岁纳京子</p>
-            <p class="access">超级管理员</p>
+            <p class="name">{{JSONEmp.emp_name}}</p>
+            <p class="access">{{role_name}}</p>
           </div>
         </div>
         <el-divider></el-divider>
@@ -16,7 +16,7 @@
           <table>
             <tr>
               <td><p>上次登录时间：</p></td>
-              <td><span>2020-12-9</span></td>
+              <td><span>{{JSONEmp.last_time}}</span></td>
             </tr>
             <tr>
               <td><p>上次登录地点：</p></td>
@@ -70,6 +70,8 @@
   export default {
     data() {
       return {
+        JSONEmp: {},
+        role_name: sessionStorage.getItem('role_name'),
         countData: [
           {
             name: '今日支付订单',
@@ -118,15 +120,11 @@
       }
     },
     methods: {
-      getTableData() {
-
-      }
-
 
     },
     //一进组件就会去请求后端接口 获取首页数据
     created() {
-      this.getTableData()
+      this.JSONEmp = JSON.parse(sessionStorage.getItem('emp'))
     }
 
   }

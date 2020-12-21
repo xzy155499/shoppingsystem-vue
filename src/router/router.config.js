@@ -7,6 +7,8 @@ import HomePage from '../view/homePage/HomePage'
 
 import EmpList from "../components/emp/emplist.vue";
 import MenuList from "../components/menu/menulist.vue";
+import RoleList from "../components/role/rolelist.vue";
+import Authority from "../components/authority/authority.vue";
 import GoodsList from "../components/goods/goodslist.vue";
 import GoodsParentTypeList from "../components/goods/goodstypelist";
 import WarehouseList from "../components/ware/warehouse";
@@ -40,16 +42,28 @@ export default new VueRouter({
           component: EmpList,
         },
         {
-          path: '/shoppingsystem/menulist', component: MenuList,
+          path: '/shoppingsystem/menulist',
+          component: MenuList,
         },
         {
-          path: "/shoppingsystem/goods", component: GoodsList
+          path: '/shoppingsystem/rolelist',
+          component: RoleList,
         },
         {
-          path: "/shoppingsystem/goodstype", component: GoodsParentTypeList
+          path: '/shoppingsystem/authority',
+          component: Authority,
         },
         {
-          path: "/shoppingsystem/warehouse", component: WarehouseList
+          path: "/shoppingsystem/goods",
+          component: GoodsList
+        },
+        {
+          path: "/shoppingsystem/goodstype",
+          component: GoodsParentTypeList
+        },
+        {
+          path: "/shoppingsystem/warehouse",
+          component: WarehouseList
         }
       ]
     },

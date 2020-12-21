@@ -1,48 +1,135 @@
 <template>
-  <div id="emplist">
-    <el-input style="width: 250px;" clearable v-model="search" placeholder="输入关键字搜索">
-      <el-button  slot="append">添加</el-button>
+  <div>
+    <el-input style="width: 200px;" v-model="label" clearable placeholder="输入菜单名">
     </el-input>
-    <br/><br/>
+    <el-button @click="condSearch">查询</el-button>
+    <br/>
+    <br/>
+    <!-- :data="pageVo.rows" -->
+    <el-table :data="menuData"
+              border max-height="710px"
+              row-key="id"
+              :tree-props="{children: 'childMenu', hasChildren: 'hasChildMenu'}">
+      <el-table-column prop="label" label="菜单名称">
+      </el-table-column>
+      <el-table-column prop="nodeType" label="类型">
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.nodeType === 1 ? 'success' : 'warning'"
+            disable-transitions>{{scope.row.nodeType == '1' ? '菜单' : '目录' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="icon" label="图标">
+        <template slot-scope="scope">
+          <i :class="scope.row.icon"></i>
+        </template>
+      </el-table-column>
+      <el-table-column prop="path" label="访问地址">
+        <template slot-scope="scope">
+          <label>{{scope.row.path != null ? scope.row.path : '暂无数据' }}</label>
+        </template>
+      </el-table-column>
+      <el-table-column prop="isdelete" label="状态">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.isdelete"
+            active-color="#13ce66"
 
-    <el-table :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-              border>
-      <el-table-column type="selection" width="55">
+            :active-value="0"
+            :inactive-value="1"
+            @change="onEnable($event,scope.row)"
+          />
+        </template>
       </el-table-column>
-      <el-table-column prop="name" label="姓名">
-      </el-table-column>
-      <el-table-column prop="date" label="日期">
-      </el-table-column>
-      <el-table-column label="操作">
-        <el-button type="warning" icon="el-icon-edit" plain circle></el-button>
-        <el-button type="danger" icon="el-icon-delete" plain circle ></el-button>
-      </el-table-column>
+      <!--    <el-table-column label="操作">-->
+      <!--      <template slot-scope="scope">-->
+      <!--        <el-button size="mini" type="warning" plain >编辑</el-button>-->
+      <!--        @click="openEditEmpDialog(scope.row)"-->
+      <!--      </template>-->
+      <!--    </el-table-column>-->
     </el-table>
+
+    <!--  <el-pagination-->
+    <!--    @size-change="changeSize"-->
+    <!--    @current-change="changePage"-->
+    <!--    background-->
+    <!--    :page-sizes="[5, 10, 15, 20]"-->
+    <!--    :page-size="5"-->
+    <!--    layout="total, sizes, prev, pager, next, jumper"-->
+    <!--    :total="pageVo.total">-->
+    <!--  </el-pagination>-->
   </div>
 </template>
 
 <script>
   export default {
-    name: "emplist",
-    data(){
-      return{
-        search: '',
-        //用户数据 数组对象
-        tableData: [{
-          name: '菜单一',
-          date: '2016-05-02',
-        }, {
-          name: '菜单二',
-          date: '2016-05-04',
-        }, {
-          name: '菜单三',
-          date: '2016-05-01',
-        }, {
-          name: '菜单四',
-          date: '2016-05-03',
-        }],
+    data() {
+      return {
+        label: '',
+        pageVo: {},
+        menuData: [],
+        switchValue: '',
+        pageIndex: '1',
+        pageSize: '5',
       }
     },
+    methods: {
+      //获取后端菜单数据信息
+      getMenuData() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("label", this.label);
+        this.$axios.post("queryAllTreeMenu.action", params).then(function (result) {
+          _this.menuData = result.data;
+        }).catch(function (error) {
+          console.log(error)
+        })
+      },
+      //条件查询
+      condSearch() {
+        this.pageIndex = 1;
+        this.getMenuData();
+      },
+      //分页
+      changePage(page) {
+        this.pageIndex = page;
+        this.getMenuData();
+      },
+      changeSize(size) {
+        this.pageSize = size;
+        this.getMenuData();
+      },
+      onEnable(event, it) {
+        this.$confirm(`你确认要${it.isdelete ? "禁用" : "启用"}菜单[${it.label}]吗?`, "提示", {
+            confirmButtonText: "确认",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        ).then(() => {
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("id", it.id);
+          params.append("isdelete", event);
+          _this.$axios.post("disabledMenu.action", params).then(function (result) {
+            if(result.data >0){
+              _this.$message.success("更新菜单状态成功");
+            }else {
+              _this.$message.success("更新失败,未知错误");
+            }
+            _this.getMenuData();
+          }).catch(function (error) {
+            console.log(error)
+          })
+        }).catch((error) => {
+          this.getMenuData();
+        });
+
+      },
+    },
+    created() {
+      this.getMenuData();
+    }
   }
 </script>
 
