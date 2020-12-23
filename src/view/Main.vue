@@ -225,6 +225,13 @@
     created: function () {
       this.JSONEmp = JSON.parse(sessionStorage.getItem('emp'));
       var emp = this.JSONEmp;
+      this.$notify({
+        title: '信息',
+        dangerouslyUseHTMLString: true,
+        type: 'success',
+        message: '<h3>上午好!'+emp.emp_name+'</h3>',
+        position: 'bottom-right'
+      });
       if (emp == undefined || emp == null || emp == '') {
         this.$router.push("/shoppingsystem/login");
       }else {
@@ -289,7 +296,7 @@
   }
 
   .el-header {
-    border-bottom: 1px solid #E6E6E6;
+    box-shadow: 0px 0px 14px 0px rgba(207, 207, 207, 0.51);
     text-align: center;
   }
   .time{

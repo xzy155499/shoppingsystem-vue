@@ -13,7 +13,9 @@
           <el-table-column prop="emp_name" label="姓名">
           </el-table-column>
           <el-table-column prop="photo" label="照片">
-            <el-avatar shape="square" :size="50" src="../src/assets/snjz.gif"></el-avatar>
+            <template slot-scope="scope">
+              <el-avatar shape="square" :size="50" :src="scope.row.photo"></el-avatar>
+            </template>
           </el-table-column>
           <el-table-column prop="emp_age" label="年龄">
           </el-table-column>

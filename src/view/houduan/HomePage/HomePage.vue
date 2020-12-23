@@ -88,7 +88,7 @@
           {
             name: '今日新增用户',
             value: 5,
-            icon: 's-release',
+            icon: 'user',
             color: '#5ab1ef'
           },
           {
@@ -106,7 +106,7 @@
           {
             name: '本月新增用户',
             value: 23,
-            icon: 's-release',
+            icon: 'user',
             color: '#5ab1ef'
           }
         ],

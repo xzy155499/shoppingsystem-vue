@@ -17,14 +17,9 @@
       </el-table-column>
       <el-table-column prop="gImg" label="商品图片">
         <template slot-scope="scope">
-<!--          <img :src="scope.row.gImg" style="height: 60px;width: 60px">-->
-<!--          <el-image :src="scope.row.gImg" style="height: 60px;width: 60px"></el-image>-->
           <el-image :src="getImg(scope)" style="height: 60px;width: 60px"></el-image>
-<!--          <img src="../../assets/img/pdrr.jpg" style="height: 60px;width: 60px">-->
         </template>
-        <!-- <img src="../assets/logo.png">-->
-        <!--        <img slot-scope="{row}" :src="row.gImg" class="card-pic" width="60" height="60"/>-->
-        <!--        <div >{{show(row.gImg)}}</div>-->
+
       </el-table-column>
       <el-table-column prop="gName" label="商品名称">
       </el-table-column>

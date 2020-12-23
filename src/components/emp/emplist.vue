@@ -93,8 +93,8 @@
           <el-col :span="12">
             <el-form-item label="性别：" prop="emp_sex">
               <el-radio-group v-model="addEmpForm.emp_sex">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
+                <el-radio border label="男"></el-radio>
+                <el-radio border label="女"></el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -102,8 +102,12 @@
 
         <el-row>
           <el-col :span="12" prop="address">
-            <el-form-item label="地址：" v-model="addEmpForm.address">
-              <el-cascader clearable style="width: 360px"></el-cascader>
+            <el-form-item label="地址：">
+              <el-cascader
+                :options="options"
+                v-model="addEmpForm.address"
+                filterable
+                clearable style="width: 360px"></el-cascader>
             </el-form-item>
           </el-col>
         </el-row>
@@ -171,8 +175,8 @@
           <el-col :span="12">
             <el-form-item label="性别：" prop="emp_sex">
               <el-radio-group v-model="editEmpForm.emp_sex">
-                <el-radio label="男"></el-radio>
-                <el-radio label="女"></el-radio>
+                <el-radio border label="男"></el-radio>
+                <el-radio border label="女"></el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -180,8 +184,13 @@
 
         <el-row>
           <el-col :span="12" prop="address">
-            <el-form-item label="地址：" v-model="editEmpForm.address">
-              <el-cascader clearable style="width: 360px"></el-cascader>
+            <el-form-item label="地址：">
+              <el-cascader
+                :options="options"
+                v-model="editEmpForm.address"
+                filterable
+                clearable
+                style="width: 360px"></el-cascader>
             </el-form-item>
           </el-col>
         </el-row>
@@ -230,6 +239,7 @@
   export default {
     data() {
       return {
+        options:[],
         emp_name: '',
         emp_sex: '',
         pageIndex: '1',
@@ -285,6 +295,35 @@
       }
     },
     methods: {
+      getDate() {
+        var _this = this;
+        this.$axios.post("queryareaAll.action").then(function (result) {
+          var da =result.data;
+          var d =[];
+          for (let i = 0; i <da.length ; i++) {
+            var d1 =[]
+            for (let j = 0; j <da[i].area.length ; j++) {
+              var d2 =[]
+              for (let k = 0; k <da[i].area[j].area.length ; k++) {
+                d2.push({value:da[i].area[j].area[k].id,label:da[i].area[j].area[k].name})
+              }
+              if (d2.length==0){
+                d1.push({value:da[i].area[j].id,label:da[i].area[j].name})
+              }else{
+                d1.push({value:da[i].area[j].id,label:da[i].area[j].name,children:d2})
+              }
+            }
+            if (d1.length==0){
+              d.push({value:da[i].id,label:da[i].name})
+            }else{
+              d.push({value:da[i].id,label:da[i].name,children:d1})
+            }
+          }
+          _this.options=d;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
       getEmpData() {
         var _this = this;
         var params = new URLSearchParams();
@@ -399,6 +438,7 @@
       }
     },
     created() {
+      this.getDate();
       this.getEmpData();
     }
   }
