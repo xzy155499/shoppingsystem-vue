@@ -7,6 +7,7 @@
         </el-col>
       </el-row>
       <br/><br/>
+
       <el-row :gutter="24">
         <el-col :span="12" >
       <el-table :data="tableData.rows"
