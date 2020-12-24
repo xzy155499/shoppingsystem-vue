@@ -30,6 +30,9 @@
       <el-menu-item></el-menu-item>
       <el-menu-item index="1">首页</el-menu-item>
       <el-menu-item index="2">购物车</el-menu-item>
+      <el-menu-item style="float: right;" index="4">
+        客服咨询电话:&nbsp;123-4567-8910
+      </el-menu-item>
       <el-menu-item style="float: right;">
         <div class="r-content">
           <el-dropdown trigger="click" size="mini">
@@ -43,9 +46,8 @@
           </el-dropdown>
         </div>
       </el-menu-item>
-      <el-menu-item style="float: right;" index="4">订单管理</el-menu-item>
-      <el-menu-item style="float: right;" index="4">
-        客服咨询电话:&nbsp;123-4567-8910</el-menu-item>
+      <el-menu-item style="float: right;" index="3">订单管理</el-menu-item>
+
     </el-menu>
     <!-- 中间部分 路由 -->
     <router-view></router-view>
@@ -83,10 +85,6 @@
 </script>
 
 <style>
-
-  /*.icon-haixian{*/
-  /*  background:url('../../assets/CarouselImg/haixian.png') no-repeat center center;*/
-  /*}*/
   * {
     margin: 0;
     padding: 0;
@@ -120,16 +118,12 @@
     font-size: 18px;
     color: #999;
   }
+
   .site_footer {
     line-height: 108px;
     text-align: center;
     font-size: 14px;
     color: #999;
-  }
-  .el-card {
-    margin-left: 5px;
-    width: 285px;
-    height: 300px;
   }
 
   a {

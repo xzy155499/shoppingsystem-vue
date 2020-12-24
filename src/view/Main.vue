@@ -35,8 +35,6 @@
           <!-- 菜单缩进按钮 -->
           <div class="l-content">
             <el-button plain icon="el-icon-menu" size="mini" @click="toggleCollapse"></el-button>
-            <el-button plain icon="el-icon-refresh-right" size="mini"></el-button>
-<!--            <i class="el-icon-menu" @click="toggleCollapse"></i>-->
           </div>
           <div class="time">
             <span>{{ year }}</span>

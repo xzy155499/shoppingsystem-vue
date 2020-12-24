@@ -95,7 +95,7 @@
       </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="hide">取 消</el-button>
+        <el-button @click="adddialogFormVisible=false">取 消</el-button>
         <el-button type="primary" @click="add">确 定</el-button>
       </div>
     </el-dialog>
@@ -235,8 +235,6 @@
         this.newSearch=this.search;
         this.index=1;
         this.getData();
-      },hide(){
-
       },add(event){
         var _this =this;
         var value=this.value+"";

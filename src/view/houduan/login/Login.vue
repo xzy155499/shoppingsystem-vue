@@ -13,6 +13,20 @@
         <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码"></el-input>
       </el-form-item>
 
+      <el-form-item prop="code">
+        <el-row>
+          <el-col :span="16">
+            <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码"></el-input>
+          </el-col>
+          <el-col :span="8">
+            <div class="login-code" @click="refreshCode">
+              <!--验证码组件-->
+              <validate_code :identifyCode="identifyCode"></validate_code>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form-item>
+
       <el-checkbox v-model="checked" class="rememberme">记住密码
       </el-checkbox>
 
@@ -25,22 +39,50 @@
 </template>
 
 <script>
+  import ValidateCode from '../../../view/houduan/login/validateCode.vue'
 
   export default {
     data() {
+      const validateCode = (rule, value, callback) => {
+        if (this.identifyCode !== value) {
+          this.loginForm.code = ''
+          callback(new Error('验证码错误'))
+        } else {
+          callback()
+        }
+      }
       return {
+        identifyCodes: '1234567890',
+        identifyCode: '',
         loginForm: {
           account: '',
           pass: '',
+          code: ''
         },
         rules: {
           account: [{required: true, message: '请输入账号', trigger: 'blur'}],
-          pass: [{required: true, message: '请输入密码', trigger: 'blur'}]
+          pass: [{required: true, message: '请输入密码', trigger: 'blur'}],
+          code: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            { validator: validateCode, trigger: 'input' }
+          ]
         },
         checked: false
       }
     },
     methods: {
+      randomNum(min, max) {
+        return Math.floor(Math.random() * (max - min) + min)
+      },
+      refreshCode() {
+        this.identifyCode = ''
+        this.makeCode(this.identifyCodes, 4)
+      },
+      makeCode(o, l) {
+        for (let i = 0; i < l; i++) {
+          this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
+        }
+      },
       handleSubmit(event) {
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
@@ -52,7 +94,11 @@
               if (result.data.code == "0") {
                 // //将登录成功的用户名存入store中
                 sessionStorage.setItem('emp',JSON.stringify(result.data.emp));
-                sessionStorage.setItem('role_name', result.data.roles[0].role_name);
+                if( result.data.roles[0].role_name == undefined){
+                  sessionStorage.setItem('role_name', "暂无该员工角色");
+                } else {
+                  sessionStorage.setItem('role_name', result.data.roles[0].role_name);
+                }
                 // sessionStorage.setItem('emp_id',result.data.emp.emp_id);
                 _this.$router.push("/shoppingsystem/home")
               } else {
@@ -66,7 +112,13 @@
           }
         })
       }
-    }
+    },
+    created(){
+      this.refreshCode();
+    },
+    components:{
+      validate_code:ValidateCode
+    },
   }
 </script>
 

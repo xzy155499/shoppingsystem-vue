@@ -75,37 +75,37 @@
         countData: [
           {
             name: '今日支付订单',
-            value: 4,
+            value: null,
             icon: 's-claim',
             color: '#2ec7c9'
           },
           {
             name: '今日收藏订单',
-            value: 3,
+            value: null,
             icon: 'star-on',
             color: '#ffb980'
           },
           {
             name: '今日新增用户',
-            value: 5,
+            value: null,
             icon: 'user',
             color: '#5ab1ef'
           },
           {
             name: '本月支付订单',
-            value: 10,
+            value: null,
             icon: 's-claim',
             color: '#2ec7c9'
           },
           {
             name: '本月收藏订单',
-            value: 14,
+            value: null,
             icon: 'star-on',
             color: '#ffb980'
           },
           {
             name: '本月新增用户',
-            value: 23,
+            value: null,
             icon: 'user',
             color: '#5ab1ef'
           }
