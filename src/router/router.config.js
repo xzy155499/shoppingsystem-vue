@@ -20,6 +20,11 @@ import Merchantslist from "../components/merchants/merchantslist";
 import MerchantsLogin from "../components/merchants/merchantsLogin"
 import MerchantsHome from '../view/houduan/HomePage/HomePageMarehouse'
 import MerchantsView from "../components/merchants/merchantsView";
+import MerchantsOrder from "../components/merchants/MerchantsOrder";
+import MerchantsDelivery from "../components/merchants/merchantsDelivery";
+import MerchantsReceipt from "../components/merchants/merchantsReceipt";
+import MerchantsPick from "../components/merchants/merchantsPick";
+import MerchantsMonthByMid from "../components/merchants/merchantsMonthByMid";
 //前端
 import Index from "../view/qianduan/index/index.vue";
 import Goods from "../view/qianduan/goods/goods.vue";
@@ -105,7 +110,25 @@ export default new VueRouter({
       children: [{
         path: '/shoppingmerchants/merchantsView',
         component: MerchantsView
-      }]
+      }, {
+        path: '/shoppingmerchants/MerchantsOrder',
+         component: MerchantsOrder
+      },
+        {
+          path: '/shoppingmerchants/merchantsDelivery',
+          component: MerchantsDelivery
+        },
+        ,
+        {
+          path: "/shoppingmerchants/merchantsReceipt", component: MerchantsReceipt
+        },
+        {
+          path: "/shoppingmerchants/merchantsPick", component: MerchantsPick
+        },
+        {
+          path: "/shoppingmerchants/merchantsMonthByMid", component: MerchantsMonthByMid
+        }
+      ]
     },
     {
       path: '/shopping/shoppingCart', component: ShoppingCart,

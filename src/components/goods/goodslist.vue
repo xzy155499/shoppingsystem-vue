@@ -117,12 +117,12 @@
         <el-col :span="4">
           <div v-for="i in fileList">
             <el-radio v-model="radio" :label="i.name" @change="changeRadio(i.name)"
-                      style="margin-top: 55%">展示图片</el-radio>
+                      style="margin-top: 65%">展示图片</el-radio>
           </div>
         </el-col>
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="updImgdialogFormVisible=false">取 消</el-button>
+        <el-button @click="hideupdImgdialogFormVisible">取 消</el-button>
         <el-button type="primary" @click="upd">确 定</el-button>
       </div>
     </el-dialog>
@@ -193,8 +193,7 @@
         addform:{
           img:[]
         },
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-          {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+        fileList: []
         ,
         files:[],
         radio:1
@@ -235,7 +234,7 @@
         this.index=1;
         this.getData();
       },hide(){
-
+        this.adddialogFormVisible=false;
       },add(event){
         var _this =this;
         var value=this.value+"";
@@ -451,6 +450,10 @@
             this.$message.error('最少保留一张图片');
             return  false;
           }
+      },hideupdImgdialogFormVisible(){
+        this.fileList=[]
+        this.updImgdialogFormVisible=false;
+
       }
     },
     created: function () {

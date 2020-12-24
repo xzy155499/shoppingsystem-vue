@@ -144,7 +144,7 @@
             "parentId": 1,
             "nodeType": 2,
             "icon": null,
-            "path": "menulist",
+            "path": "shoppingmerchants/merchantsMonthByMid",
             "isdelete": 0,
             "childMenu": null,
             "checked": false
@@ -166,7 +166,7 @@
             "parentId": 2,
             "nodeType": 2,
             "icon": null,
-            "path": "shoppingmerchants/stayhairgoods",
+            "path": "shoppingmerchants/MerchantsOrder",
             "isdelete": 0,
             "childMenu": null,
             "checked": false
@@ -177,7 +177,7 @@
             "parentId": 2,
             "nodeType": 2,
             "icon": null,
-            "path": "shoppingmerchants/staygoods",
+            "path": "shoppingmerchants/merchantsDelivery",
             "isdelete": 0,
             "childMenu": null,
             "checked": false
@@ -188,7 +188,7 @@
             "parentId": 2,
             "nodeType": 2,
             "icon": null,
-            "path": "shoppingmerchants/staymentiongoods",
+            "path": "shoppingmerchants/merchantsReceipt",
             "isdelete": 0,
             "childMenu": null,
             "checked": false
@@ -199,7 +199,7 @@
             "parentId": 2,
             "nodeType": 2,
             "icon": null,
-            "path": "shoppingmerchants/beencompletedgoods",
+            "path": "shoppingmerchants/merchantsPick",
             "isdelete": 0,
             "childMenu": null,
             "checked": false
