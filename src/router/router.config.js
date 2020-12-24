@@ -13,6 +13,8 @@ import User from "../components/user/userManage.vue";
 import GoodsList from "../components/goods/goodslist.vue";
 import GoodsParentTypeList from "../components/goods/goodstypelist";
 import WarehouseList from "../components/ware/warehouse";
+import StorageWarehouse from "../components/ware/storageWarehouse";
+import IntoWarehouse from "../components/ware/IntoWarehouse";
 //后端 商家
 import Merchantslist from "../components/merchants/merchantslist";
 import MerchantsLogin from "../components/merchants/merchantsLogin"
@@ -76,12 +78,22 @@ export default new VueRouter({
           component: GoodsParentTypeList
         },
         {
-          path: "/shoppingsystem/warehouse",
-          component: WarehouseList
+          path: "/shoppingsystem/storageWarehouse",
+          component: StorageWarehouse
         },
         {
           path: "/shoppingsystem/merchantslist", component: Merchantslist
+        },
+        {
+          path: "/shoppingsystem/merchantslist", component: Merchantslist
+        },
+        {
+          path: "/shoppingsystem/intoWarehouse", component: IntoWarehouse
+        },
+        {
+          path: "/shoppingsystem/warehouse", component: WarehouseList
         }
+
       ]
     },
     //商家路由
@@ -91,9 +103,9 @@ export default new VueRouter({
     {
       path: '/shoppingmerchants/merchantsHome', component: MerchantsHome,
       children: [{
-          path: '/shoppingmerchants/merchantsView',
-          component: MerchantsView
-        }]
+        path: '/shoppingmerchants/merchantsView',
+        component: MerchantsView
+      }]
     },
     {
       path: '/shopping/shoppingCart', component: ShoppingCart,

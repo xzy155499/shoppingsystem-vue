@@ -19,7 +19,6 @@
         <template slot-scope="scope">
           <el-image :src="getImg(scope)" style="height: 60px;width: 60px"></el-image>
         </template>
-
       </el-table-column>
       <el-table-column prop="gName" label="商品名称">
       </el-table-column>
@@ -39,11 +38,11 @@
       </el-table-column>
       <el-table-column prop="gFinalPurchase" label="商品最后一次进货时间">
       </el-table-column>
-      <el-table-column label="操作" width="270px">
+      <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="warning" plain @click=updShow(scope.row)>编辑</el-button>
-          <el-button size="mini" type="danger" plain @click="del(scope.row.gId)">删除</el-button>
-          <el-button  size="mini" type="warning" plain @click="showUpdImg(scope.row)">修改图片</el-button>
+        <el-button type="warning" icon="el-icon-edit" plain circle @click=updShow(scope.row)></el-button>
+        <el-button type="danger" icon="el-icon-delete" plain circle @click="del(scope.row.gId)"></el-button>
+        <el-button type="danger"  plain circle @click="showUpdImg(scope.row)">修改图片</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,7 +117,7 @@
         <el-col :span="4">
           <div v-for="i in fileList">
             <el-radio v-model="radio" :label="i.name" @change="changeRadio(i.name)"
-                      style="margin-top: 65%">展示图片</el-radio>
+                      style="margin-top: 55%">展示图片</el-radio>
           </div>
         </el-col>
       </el-row>
