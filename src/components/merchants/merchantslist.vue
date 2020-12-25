@@ -128,7 +128,6 @@
               detailedAddress:data[i].mDetailedAddress,storesName:data[i].mStoresName,img:data[i].mImg,
               phone:data[i].mPhone})
           }
-          console.log(_this.data)
         }).catch(function (error) {
           alert(error)
         })
