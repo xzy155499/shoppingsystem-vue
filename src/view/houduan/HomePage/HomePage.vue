@@ -113,9 +113,9 @@
         tableData: [],
         tableLabel: {
           name: '商品',
-          todayBuy: '今日购买',
-          monthBuy: '本月购买',
-          totalBuy: '总购买'
+          todayBuy: '今日卖出(￥)',
+          monthBuy: '本月卖出(￥)',
+          totalBuy: '总卖出(￥)'
         }
       }
     },

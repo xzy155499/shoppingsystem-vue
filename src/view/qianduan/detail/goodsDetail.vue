@@ -1,31 +1,22 @@
 <template>
   <div id="index_wapper" class="wapper">
     <el-page-header @back="goBack" content="详情页面"></el-page-header>
-    <!--        <div class="goods-detail" v-for="item in goodsDetailData">-->
-    <!--          <el-row>-->
-    <!--            <el-col :xs="24" :sm="10" :md="6" :lg="6" :xl="6">-->
-    <!--              <br>-->
-    <!--              <div>-->
-    <!--                <el-card>-->
-    <!--                  <div>-->
-    <!--                    <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>-->
-    <!--                  </div>-->
-    <!--                </el-card>-->
-    <!--              </div>-->
-    <!--            </el-col>-->
-    <!--          </el-row>-->
-    <!--          <div>啦啦啦{{item.gName}}-->
-    <!--          </div>-->
-    <!--        </div>-->
+
     <div style="margin-top: 35px" class="details wapper" v-for="item in goodsDetailData">
       <div class="details_msg disbet">
         <!-- 商品详情图片 -->
         <div class="details_msg_left">
-                    <div class="details_msg_swiper">
-                      <div class="gallery-top">
-          <el-image :src="getImg(item.gImg)"></el-image>
-                      </div>
-                    </div>
+          <!--                    <div class="details_msg_swiper">-->
+          <!--                      <div class="gallery-top">-->
+          <!--                        getImg(item.gImg)-->
+
+          <el-carousel height="420px" arrow="always">
+            <el-carousel-item v-for="url in getImg(item.gImg)">
+              <el-image :src="url"></el-image>
+            </el-carousel-item>
+          </el-carousel>
+          <!--                      </div>-->
+          <!--                    </div>-->
         </div>
         <div class="details_msg_right">
 
@@ -33,8 +24,8 @@
             <div>
               <h2>{{item.gName}}</h2>
               <p>{{item.gDescribe}}</p>
-              <p>产品周期:&emsp;<span class="col222">12月-次年3月底</span></p>
-              <p>产&emsp;&emsp;地:&emsp;<span class="col222">不详</span></p>
+              <p>产品周期:&emsp;<span class="col222">12月-次年3月</span></p>
+              <p>产&emsp;&emsp;地:&emsp;<span class="col222">湖南长沙</span></p>
             </div>
           </div>
 
@@ -59,28 +50,100 @@
               <div class="disbet ck_dv02_dv">
 								<span>
 									<em :title="item.gName">
-                    <el-image :src="getImg(item.gImg)"></el-image>
+                    <el-image :src="getFirstImg(item.gImg)"></el-image>
                   </em>
 									{{item.gName}}
 								</span>
-                <span style="color:#f72424">&yen; {{goods_SumPrice}}</span>
-                <el-input-number @change="sumPrice(item.gPriceOut)" v-model="num" :min="0" :max="1000"></el-input-number>
+                <span style="color:#f72424">总计：&yen; {{goods_SumPrice}}</span>
+                <el-input-number @change="sumPrice(item.gPriceOut)" v-model="num" :min="0"
+                                 :max="1000"></el-input-number>
               </div>
             </div>
           </div>
 
-          <div class="details_msg_dv03 disbet">
-            <el-button type="success" icon="el-icon-shopping-cart-2">加入购物车</el-button>
+          <div class="details_msg_dv03">
+            <el-button
+              type="danger">立即购买
+            </el-button>
+            <el-button type="danger" icon="el-icon-shopping-cart-2">加入购物车</el-button>
           </div>
 
         </div>
       </div>
+
+      <!--      <div class="details_details disbet">-->
+
+      <!--        <div class="details_details_right">-->
+      <!--          <div class="details_right_nav">-->
+      <!--            <ul class="disbet">-->
+      <!--              <li class="active" data-id='1'>-->
+      <!--                物流规则-->
+      <!--              </li>-->
+      <!--              <li data-id='1'>售后标准</li>-->
+      <!--              <li data-id='1'>商品详情</li>-->
+      <!--              <li data-id='1'>商品评论</li>-->
+      <!--            </ul>-->
+      <!--          </div>-->
+      <!--          <div class="details_details_right_dv">-->
+      <!--            <div class="details_rule details_public_dv">-->
+      <!--              <h2>物流规则</h2>-->
+      <!--              <p>新疆,西藏,青海,海南,内蒙古,甘肃,宁夏,黑龙江,辽宁,吉林不发</p>-->
+      <!--            </div>-->
+      <!--            <div class="details_rule01 details_public_dv">-->
+      <!--              <h2>售后标准</h2>-->
+      <!--              <div style="margin-top: 37px;">-->
+      <!--                <p>-->
+      <!--                  1.生鲜水果一经发出，不支持退款及拒签。（拒签不予售后)<br>2.签收后24小时内把快递面单和所有坏果（切开，露出不能食用部分）一起同框拍照反馈（照片清晰可见快递单号及坏果原因），逾期不予处理，不接受丢弃之说。<br>3不支持小视频。不能提供清晰可见的快递面单加坏果同框合拍照片，一律不予理赔；不接受丢弃之说。<br>4.接受未开箱前的称重，并附上清晰可见的面单正面照片和电子称刻度照片一张，开箱后称重的不予理赔。由于水果大小不一，称重不能特别精准，所以有上下2两幅度，谢谢望理解！<br>5.因客户个人原因延误签收，拒接或无人接听，电话停机-->
+      <!--                  ，地址不详，地址错误等售后不在赔付理赔范围内。<br>6.个人口感、喜好、轻微磕碰，枝磨，瓜果斑属正常现象（望谅解）不属于理赔范围。<br>7.任何水果做不到到货百分百新鲜，快递的在途周期一定程度上会影响水果的新鲜度，在不影响食用的前提下不予理赔。<br>8.签收后24小时内果皮有轻微变化、瑕疵不影响食用，不予理赔。-->
+      <!--                </p>-->
+      <!--              </div>-->
+      <!--              <div class="Bad_fruit disbet">-->
+      <!--                <div>-->
+      <!--                  <img src="https://img.inongjia.net/b2b/product/NJ0301/aftersale/1.jpg?x-oss-process=image/resize,m_fill,h_192,w_222"-->
+      <!--                       alt="">-->
+      <!--                  <div>坏果</div>-->
+      <!--                </div>-->
+      <!--                <div>-->
+      <!--                  <img src="https://img.inongjia.net/b2b/product/NJ0301/aftersale/2.jpg?x-oss-process=image/resize,m_fill,h_192,w_222"-->
+      <!--                       alt="">-->
+      <!--                  <div>重量不足</div>-->
+      <!--                </div>-->
+      <!--                <div>-->
+      <!--                  <img src="https://img.inongjia.net/b2b/product/NJ0301/aftersale/3.jpg?x-oss-process=image/resize,m_fill,h_192,w_222"-->
+      <!--                       alt="">-->
+      <!--                  <div>果径不达标</div>-->
+      <!--                </div>-->
+      <!--                <div>-->
+      <!--                  <img src="https://img.inongjia.net/b2b/product/NJ0301/aftersale/4.jpg?x-oss-process=image/resize,m_fill,h_192,w_222"-->
+      <!--                       alt="">-->
+      <!--                  <div>物流停滞</div>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--            <div class="details_rule02 details_public_dv">-->
+      <!--              <h2>商品详情</h2>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
 </template>
 
 <script>
+  // import imgZoom from 'vue2.0-zoom'
+
   export default {
+    props: {
+      configs: {
+        width: 500,
+        height: 380,
+        maskWidth: 100,
+        maskHeight: 100,
+        maskColor: 'red',
+        maskOpacity: 0.2
+      }
+    },
     data() {
       return {
         goodsDetailData: [],
@@ -92,28 +155,45 @@
       goBack() {
         this.$router.push("/shoppingsystem/index")
       },
-      getImg(url) {
+      //拿到第一个图片
+      getFirstImg(url) {
         let img = url.split(",");
         var firstImg = img[1]
         if (img.length == 1) {
           firstImg = img[0]
         }
+        // var img = url;
+        // var index = img.indexOf(',');
+        // var firstImg = "";
+        // if (index == -1) {
+        //   return img
+        // }
+        // imgurl = img.substr(0, img.indexOf(','))
+        // return imgurl
         return firstImg
       },
+      //拿到除第一个的图片
+      getImg(url) {
+        let img = url.split(",");
+        let imgUrl = img.slice(1, img.length)
+        if (img.length == 1)
+          imgUrl = img.slice(0, img.length)
+        return imgUrl;
+      },
       //计算总价
-      sumPrice(goods_Price){
+      sumPrice(goods_Price) {
         this.goods_SumPrice = Number(goods_Price) * Number(this.num)
       }
     },
     created() {
-      this.goodsDetailData = this.$route.query.data
-      console.log(JSON.stringify(this.goodsDetailData))
-    }
+
+    },
+
   }
 </script>
 
 <style>
-  .col111{
+  .col111 {
     color: #ff0037;
     font-size: 16px;
   }
@@ -123,18 +203,22 @@
     font-size: 14px;
     color: #222 !important;
   }
-  .details .details_msg .details_msg_left  {
+
+  .details .details_msg .details_msg_left {
     height: 420px;
     width: 420px;
     background-color: #ffffff;
     border: solid 1px #cccccc;
   }
-  .details_msg_dv02{
+
+  .details_msg_dv02 {
     text-align: left;
   }
+
   .details .details_msg .details_msg_right .details_msg_title {
     text-align: left;
   }
+
   .details .details_msg .details_msg_right .details_msg_title h2 {
     color: #111111;
     font-size: 18px;
@@ -145,6 +229,7 @@
     color: #999999;
     margin-top: 20px;
   }
+
   .details .details_msg .details_msg_right .details_msg_dv02 {
     margin-top: 14px;
     width: 100%;
@@ -178,8 +263,8 @@
 
   .details .details_msg .details_msg_right .details_msg_dv02.ck_dv02 > div .ck_dv02_dv > span:nth-of-type(2) {
     display: block;
-    width: 70px;
-    min-width: 70px;
+    width: 110px;
+    min-width: 110px;
   }
 
   .details .details_msg .details_msg_right .details_msg_dv02.ck_dv02 > div .ck_dv02_dv span {
@@ -191,14 +276,14 @@
     max-width: 140px;
     border-radius: 2px;
     height: 28px;
-    margin-left: 130px;
+    margin-left: 90px;
   }
 
   .details .details_msg .details_msg_right .details_msg_dv02.ck_dv02 > div .ck_dv02_dv em {
     padding-top: 0;
     border: 1px solid #b8b7bd;
     text-align: center;
-    margin-right: 5px;
+    margin-right: 50px;
     box-sizing: border-box;
     height: 60px;
     cursor: pointer;
@@ -230,7 +315,8 @@
   }
 
   .details .details_msg .details_msg_right .details_msg_dv03 {
-    margin-top: 40px;
+    float: right;
+    margin-top: 30px;
     justify-content: center;
   }
 </style>

@@ -33,7 +33,7 @@
       <div class="main_product mart24 public_dv1">
         <div class="main_product_title">
           <span>每日推荐</span>
-          <a href="javascript:;"><em></em></a>
+          <a href="javascript:"><em></em></a>
           <img src="../../../assets/indexImg/everydayLogo.png">
         </div>
         <div class="main_product_list">
@@ -55,7 +55,7 @@
       <div class="public_dv public_dv2">
         <div class="public_dv_title disbet">
           <h2 id="goods-fruits">新鲜水果</h2>
-          <a href="javascript:;" @click="moreFruits">查看更多 ></a>
+          <a href="javascript:" @click="moreFruits">查看更多 ></a>
         </div>
         <el-row>
           <el-col v-for="item in FruitsData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
@@ -88,7 +88,7 @@
       <div class="public_dv public_dv3">
         <div class="public_dv_title disbet">
           <h2 id="goods-cooked">美味熟食</h2>
-          <a href="">查看更多 ></a>
+          <a href="javascript:" @click="moreCooked">查看更多 ></a>
         </div>
         <el-row>
           <el-col v-for="item in CookedData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
@@ -122,7 +122,7 @@
         <div class="public_dv_title disbet">
           <h2 id="goods-snacks">休闲零食</h2>
           <!--          <h2>其他</h2>-->
-          <a href="">查看更多 ></a>
+          <a href="javascript:" @click="moreSnacks">查看更多 ></a>
         </div>
         <el-row>
           <el-col v-for="item in SnacksData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
@@ -155,7 +155,7 @@
       <div class="public_dv public_dv5">
         <div class="public_dv_title disbet">
           <h2 id="goods-else">其他</h2>
-          <a href="" >查看更多 ></a>
+          <a href="javascript:" @click="moreElse">查看更多 ></a>
         </div>
         <el-row>
           <el-col v-for="item in ElseData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
@@ -164,11 +164,10 @@
               <el-card :body-style="{ padding: '0px' }" shadow="hover">
                 <div class="goods-list-card-body">
                   <div class="goods-list-tag-group">
-                    <el-badge class="item" v-if="item === 4" value="new"></el-badge>
+                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
                     <el-badge class="item" v-if="item.gNum >= 400" value="hot"></el-badge>
                     <el-badge class="item" v-else-if="item.gNum < 100 && item.gNum > 20" value="推荐"
                               type="success"></el-badge>
-                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
                   </div>
                   <div class="goods-list-image-group">
                     <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>
@@ -218,7 +217,7 @@
           alert(error)
         })
       },
-      //更多水果
+      //更多 水果
       moreFruits() {
         var _this = this;
         var params = new URLSearchParams();
@@ -242,6 +241,18 @@
           alert(error)
         })
       },
+      //更多 熟食
+      moreCooked() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "2");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.CookedData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
       //零食
       goodsSnacksData() {
         var _this = this;
@@ -254,11 +265,35 @@
           alert(error)
         })
       },
+      //更多 零食
+      moreSnacks() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "3");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.SnacksData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
       //其他
       goodsElseData() {
         var _this = this;
         var params = new URLSearchParams();
         params.append("rows", this.pageSize);
+        params.append("gParent", "5");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.ElseData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //更多 其他
+      moreElse() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
         params.append("gParent", "5");
         this.$axios.post("queryAllGoods.action", params).then(function (result) {
           _this.ElseData = result.data;
@@ -401,9 +436,6 @@
   /*  min-width: 1200px;*/
   /*  font-family: "Microsoft YaHei";*/
   /*}*/
-
-
-
 
 
   .overhide1 {

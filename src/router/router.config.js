@@ -24,6 +24,7 @@ import MerchantsView from "../components/merchants/merchantsView";
 import Index from "../view/qianduan/index/index.vue";
 import Goods from "../view/qianduan/goods/goods.vue";
 import Detail from "../view/qianduan/detail/goodsDetail.vue";
+import indexLogin from "../view/qianduan/login/Login.vue";
 import ShoppingCart from "../view/shopping/shoppingCart";
 
 Vue.use(VueRouter)
@@ -126,7 +127,10 @@ export default new VueRouter({
           path: '/shoppingsystem/detail',
           component: Detail
         },
-
+        {
+          path: '/shoppingsystem/indexLogin',
+          component: indexLogin
+        },
       ]
     },
   ]

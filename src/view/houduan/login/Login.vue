@@ -16,7 +16,7 @@
       <el-form-item prop="code">
         <el-row>
           <el-col :span="16">
-            <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码"></el-input>
+            <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码"></el-input>
           </el-col>
           <el-col :span="8">
             <div class="login-code" @click="refreshCode">
@@ -27,11 +27,9 @@
         </el-row>
       </el-form-item>
 
-      <el-checkbox v-model="checked" class="rememberme">记住密码
-      </el-checkbox>
 
       <el-form-item style="width:100%;">
-        <el-button type="primary" style="width:100%;" @click="handleSubmit">登录</el-button>
+        <el-button type="primary" :loading="loading" style="width:100%;" @click="handleSubmit">登录</el-button>
       </el-form-item>
 
     </el-form>
@@ -59,6 +57,7 @@
           pass: '',
           code: ''
         },
+        loading: false,
         rules: {
           account: [{required: true, message: '请输入账号', trigger: 'blur'}],
           pass: [{required: true, message: '请输入密码', trigger: 'blur'}],
@@ -67,7 +66,6 @@
             { validator: validateCode, trigger: 'input' }
           ]
         },
-        checked: false
       }
     },
     methods: {
@@ -87,6 +85,7 @@
         this.$refs.loginForm.validate((valid) => {
           if (valid) {
             var _this = this;
+            _this.loading = true
             var params = new URLSearchParams();
             params.append("account", _this.loginForm.account);
             params.append("pass", _this.loginForm.pass);
@@ -94,17 +93,18 @@
               if (result.data.code == "0") {
                 // //将登录成功的用户名存入store中
                 sessionStorage.setItem('emp',JSON.stringify(result.data.emp));
-                if( result.data.roles[0].role_name == undefined){
-                  sessionStorage.setItem('role_name', "暂无该员工角色");
-                } else {
+                // if( result.data.roles[0].role_name == undefined){
+                //   sessionStorage.setItem('role_name', "暂无该员工角色");
+                // } else {
                   sessionStorage.setItem('role_name', result.data.roles[0].role_name);
-                }
-                // sessionStorage.setItem('emp_id',result.data.emp.emp_id);
+                // }
+                _this.loading = false;
                 _this.$router.push("/shoppingsystem/home")
               } else {
                 _this.$alert(result.data.msg, '提示', {
                   confirmButtonText: 'ok'
                 })
+                _this.loading = false
               }
             }).catch(function (error) {
               alert(error);
@@ -149,10 +149,7 @@
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
   }
-  label {
-    margin: 0px 0px 15px;
-    text-align: left;
-  }
+
   .title{
     margin: 0px 0px 15px;
   }

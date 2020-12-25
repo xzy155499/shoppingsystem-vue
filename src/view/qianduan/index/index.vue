@@ -4,53 +4,48 @@
     <el-backtop :bottom="50">
       <div
         style="{
-        height: 100%;
-        width: 100%;
-        border-radius:50%; /* 边框圆角 */
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0,0,0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-      }"
+          height: 100%;
+          width: 100%;
+          border-radius:50%; /* 边框圆角 */
+          background-color: #f2f5f6;
+          box-shadow: 0 0 6px rgba(0,0,0, .12);
+          text-align: center;
+          line-height: 40px;
+          color: #1989fa;
+        }"
       >
         <i class="el-icon-caret-top" style="color: #1989fa"></i>
       </div>
     </el-backtop>
     <!-- 头部 -->
-    <el-menu :default-active="1+''" class="el-menu-demo" mode="horizontal">
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item></el-menu-item>
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-menu-item index="2">购物车</el-menu-item>
-      <el-menu-item style="float: right;" index="4">
-        客服咨询电话:&nbsp;123-4567-8910
+    <el-menu :default-active="5+''" :router="true" class="el-menu-head" mode="horizontal">
+      <el-menu-item style="margin-left: 350px;" index="index">首页</el-menu-item>
+
+      <el-menu-item index="">购物车</el-menu-item>
+
+      <el-menu-item>订单管理</el-menu-item>
+
+      <el-menu-item index="indexLogin" v-if="loginMsg" style="margin-left: 900px;">登录/注册</el-menu-item>
+
+      <el-menu-item v-else style="margin-left: 900px;">
+        <el-dropdown trigger="click" size="mini">
+                <span class="el-dropdown-link">
+                  <el-avatar :size="40" src="../src/assets/img/qimu.jpg"></el-avatar>
+                </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
+            <el-dropdown-item  icon="el-icon-switch-button">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-menu-item>
-      <el-menu-item style="float: right;">
-        <div class="r-content">
-          <el-dropdown trigger="click" size="mini">
-              <span class="el-dropdown-link">
-                <el-avatar :size="40" src="../src/assets/img/qimu.jpg"></el-avatar>
-              </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-switch-button">退出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </div>
-      </el-menu-item>
-      <el-menu-item style="float: right;" index="3">订单管理</el-menu-item>
+
+      <el-menu-item >客服咨询电话:&nbsp;123-4567-8910</el-menu-item>
 
     </el-menu>
+
     <!-- 中间部分 路由 -->
     <router-view></router-view>
+
     <!-- 底部 -->
     <div class="index_fotter">
       <div class="wapper index_fotter_dv disbet">
@@ -78,20 +73,30 @@
 <script>
   export default {
     data() {
-      return {}
+      return {
+        loginMsg: JSON.parse(sessionStorage.getItem('msg'))
+      }
     },
-    methods: {},
+    methods: {
+    },
   }
 </script>
 
 <style>
+
+
   * {
     margin: 0;
     padding: 0;
   }
 
-  .el-menu {
+  .el-menu-head {
+    align-items: center;
     box-shadow: 0px 0px 14px 0px rgba(207, 207, 207, 0.51);
+  }
+
+  .el-menu-head .el-menu-item {
+    /*margin-left: 20px;*/
   }
 
   .index_fotter {
@@ -127,6 +132,7 @@
   }
 
   a {
-    text-decoration: blink;
+    text-decoration: none;
   }
+
 </style>
