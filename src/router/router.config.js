@@ -15,6 +15,10 @@ import GoodsParentTypeList from "../components/goods/goodstypelist";
 import WarehouseList from "../components/ware/warehouse";
 import StorageWarehouse from "../components/ware/storageWarehouse";
 import IntoWarehouse from "../components/ware/IntoWarehouse";
+import AllowMerchantsEnter from "../components/merchants/AllowMerchantsEnter";
+//报表
+import StoresStatistical from "../components/statistical/stores";
+import WarehouseStatistical from "../components/statistical/warehouse";
 //后端 商家
 import Merchantslist from "../components/merchants/merchantslist";
 import MerchantsLogin from "../components/merchants/merchantsLogin"
@@ -29,7 +33,7 @@ import MerchantsMonthByMid from "../components/merchants/merchantsMonthByMid";
 import Index from "../view/qianduan/index/index.vue";
 import Goods from "../view/qianduan/goods/goods.vue";
 import Detail from "../view/qianduan/detail/goodsDetail.vue";
-import ShoppingCart from "../view/shopping/shoppingCart";
+
 
 Vue.use(VueRouter)
 
@@ -97,7 +101,17 @@ export default new VueRouter({
         },
         {
           path: "/shoppingsystem/warehouse", component: WarehouseList
-        }
+        },
+        {
+          path: "/shoppingsystem/warehouse", component: WarehouseList
+        },{
+          path: '/shoppingmerchants/stores', component: StoresStatistical,
+        },{
+          path: '/shoppingmerchants/warehouse', component: WarehouseStatistical,
+        },
+        {
+          path: '/shoppingmerchants/allowMerchantsEnter', component: AllowMerchantsEnter,
+        },
 
       ]
     },
@@ -127,11 +141,9 @@ export default new VueRouter({
         },
         {
           path: "/shoppingmerchants/merchantsMonthByMid", component: MerchantsMonthByMid
-        }
+        },
+
       ]
-    },
-    {
-      path: '/shopping/shoppingCart', component: ShoppingCart,
     },
     //前端路由
     {

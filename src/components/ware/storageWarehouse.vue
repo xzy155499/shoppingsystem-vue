@@ -171,6 +171,7 @@
           imgurl = img.substr(0, img.indexOf(','))
           return imgurl
         },updateGoods(id){
+          this.index=1;
           this.ids.push({id:id,num:1});
           this.getData();
         },delGoods(id){

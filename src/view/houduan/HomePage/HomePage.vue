@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-row class="home" :gutter="20">
     <el-col :span="9" style="margin-top: 20px">
       <!-- 个人信息 -->
@@ -28,9 +29,18 @@
 
       <!-- 购买情况 -->
       <el-card style="height: 450px ; margin-top: 20px" shadow="hover">
-        <el-table :data="tableData">
-          <el-table-column show-overflow-tooltip v-for="(val, key) in tableLabel" :key="key" :prop="key"
-                           :label="val"></el-table-column>
+        <el-table :data="tableData"
+                  border>
+          <el-table-column prop="gName" label="商品名称">
+          </el-table-column>
+          <el-table-column prop="gParent" label="今日购买">
+          </el-table-column>
+          <el-table-column prop="gChild" label="近一周购买">
+          </el-table-column>
+          <el-table-column prop="warehouseNum" label="近一月购买">
+          </el-table-column>
+          <el-table-column prop="gNum" label="销售总量">
+          </el-table-column>
         </el-table>
       </el-card>
 
@@ -42,13 +52,14 @@
         <el-card  shadow="hover" v-for="item in countData" :key="item.name" :body-style="{ display: 'flex', padding: 0}">
           <i class="icon" :class="`el-icon-${item.icon}`" :style="{ background: item.color }"></i>
           <div class="detail">
-            <p class="num">￥ {{ item.value }}</p>
+            <p class="num">{{ item.value }}</p>
             <p class="txt">{{ item.name }}</p>
           </div>
         </el-card>
       </div>
-      <!-- 全年的销售情况 -->
+      <!-- 荣布斯榜 -->
       <el-card style="height: 290px" shadow="hover">
+        <div id="main"  style="float:left;width:100%;height: 300%"></div>
       </el-card>
 
       <div class="graph">
@@ -64,9 +75,17 @@
     </el-col>
 
   </el-row>
+
+  </div>
 </template>
 
 <script>
+  let echarts = require('echarts/lib/echarts')
+  // 引入饼状图组件
+  require('echarts/lib/chart/pie')
+  // 引入提示框和title组件
+  require('echarts/lib/component/tooltip')
+  require('echarts/lib/component/title')
   export default {
     data() {
       return {
@@ -77,55 +96,110 @@
             name: '今日支付订单',
             value: 4,
             icon: 's-claim',
-            color: '#2ec7c9'
+            color: '#2ec7c9',
+            text:'orderNumDay'
           },
           {
-            name: '今日收藏订单',
+            name: '今日利润',
             value: 3,
             icon: 'star-on',
-            color: '#ffb980'
+            color: '#ffb980',
+            text:'orderInfoGoodsDayProfits'
           },
           {
             name: '今日新增用户',
             value: 5,
             icon: 'user',
-            color: '#5ab1ef'
+            color: '#5ab1ef',
+            text:'userNumDay'
           },
           {
-            name: '本月支付订单',
+            name: '近一月支付订单',
             value: 10,
             icon: 's-claim',
-            color: '#2ec7c9'
+            color: '#2ec7c9',
+            text:'orderNumMonty'
           },
           {
-            name: '本月收藏订单',
+            name: '近一月利润',
             value: 14,
             icon: 'star-on',
-            color: '#ffb980'
+            color: '#ffb980',
+            text:'orderInfoGoodsMontyProfits'
           },
           {
-            name: '本月新增用户',
+            name: '近一月新增用户',
             value: 23,
             icon: 'user',
-            color: '#5ab1ef'
+            color: '#5ab1ef',
+            text:'userNumMonty'
           }
         ],
         tableData: [],
-        tableLabel: {
-          name: '商品',
-          todayBuy: '今日购买',
-          monthBuy: '本月购买',
-          totalBuy: '总购买'
-        }
+        map:{},
+        rbsData:[],
       }
     },
     methods: {
-
+      getDate(){
+        var _this =this;
+        this.$axios.post("queryAllOrderInfoGoods.action").then(function (result) {
+          _this.tableData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+        this.$axios.post("queHomeData.action").then(function (result) {
+          _this.map = result.data;
+          for (let i = 0; i <_this.countData.length ; i++) {
+            _this.countData[i].value=_this.map[_this.countData[i].text]
+          }
+        }).catch(function (error) {
+          alert(error)
+        })
+      },//初始化数据
+      initData() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 绘制图表
+        var da = [];
+        var te = [];
+        $.ajax({
+          type: "post",
+          url: "http://localhost:8080/shoppingsystem/queOrderByUid.action",
+          cache: false,
+          async: false,
+          dataType: "json",
+          success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+              da[i] = data[i].user_name;
+              te[i] = data[i].pass;
+            }
+          }
+        })
+        myChart.setOption({
+          title: {
+            text: '荣布斯榜(单位：元)'
+          },
+          tooltip: {},
+          xAxis: {
+            data: da
+          },
+          yAxis: {},
+          series: [{
+            name: '交易金额',
+            type: 'bar',
+            data: te
+          }]
+        });
+      }
     },
     //一进组件就会去请求后端接口 获取首页数据
     created() {
+      this.getDate();
       this.JSONEmp = JSON.parse(sessionStorage.getItem('emp'))
-    }
+    },mounted(){
+      this.initData();
+    },
 
   }
 
