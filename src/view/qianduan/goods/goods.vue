@@ -17,7 +17,7 @@
 
     <div id="index_wapper" class="wapper">
       <!-- 商品查询 -->
-      <el-input placeholder="商品名称" style="width:64%;">
+      <el-input placeholder="商品名称" v-model="goods_name" style="width:64%;">
         <template slot="append">
           <el-button icon="el-icon-search" type="primary" native-type="submit">查询
           </el-button>
@@ -25,15 +25,15 @@
       </el-input>
       <ul class="index_nav disbet">
         <li><a href="#goods-fruits"><i class="index_nav_icon01"></i>新鲜水果</a></li>
-        <li><a href=""><i class="index_nav_icon03"></i>美味熟食</a></li>
-        <li><a href=""><i class="index_nav_icon04"></i>休闲零食</a></li>
+        <li><a href="#goods-cooked"><i class="index_nav_icon03"></i>美味熟食</a></li>
+        <li><a href="#goods-snacks"><i class="index_nav_icon04"></i>休闲零食</a></li>
         <!--          <li><a href=""><i class="icon-haixian"></i>优质海鲜</a></li>-->
       </ul>
       <!-- 每日推荐 -->
       <div class="main_product mart24 public_dv1">
         <div class="main_product_title">
           <span>每日推荐</span>
-          <a href="javascript:;"><em></em></a>
+          <a href="javascript:"><em></em></a>
           <img src="../../../assets/indexImg/everydayLogo.png">
         </div>
         <div class="main_product_list">
@@ -55,22 +55,20 @@
       <div class="public_dv public_dv2">
         <div class="public_dv_title disbet">
           <h2 id="goods-fruits">新鲜水果</h2>
-<!--          <h2 v-if="item.gName == '荣桑'">美味熟食</h2>-->
-<!--          <h2 v-if="item.gName == '憨批荣荣'">休闲零食</h2>-->
-<!--          <h2 v-if="item.gName == '200斤的荣'">其他</h2>-->
-          <a href="#">查看更多 ></a>
+          <a href="javascript:" @click="moreFruits">查看更多 ></a>
         </div>
         <el-row>
-          <el-col v-for="item in goodsData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
+          <el-col v-for="item in FruitsData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
             <br>
             <div @click="detail(item.gId)">
               <el-card :body-style="{ padding: '0px' }" shadow="hover">
                 <div class="goods-list-card-body">
                   <div class="goods-list-tag-group">
-                    <el-badge v-if="item === 2" value="缺货"></el-badge>
-                    <el-badge v-if="item === 4" value="hot"></el-badge>
-                    <el-badge v-if="item === 3" value="推荐" type="success"></el-badge>
-                    <el-badge v-if="item === 4" value="new"></el-badge>
+                    <el-badge class="item" v-if="item === 4" value="new"></el-badge>
+                    <el-badge class="item" v-if="item.gNum >= 400" value="hot"></el-badge>
+                    <el-badge class="item" v-else-if="item.gNum < 100 && item.gNum > 20" value="推荐"
+                              type="success"></el-badge>
+                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
                   </div>
                   <div class="goods-list-image-group">
                     <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>
@@ -86,36 +84,106 @@
           </el-col>
         </el-row>
       </div>
-      <!-- 新鲜水果 -->
-<!--      <div class="public_dv public_dv2">-->
-<!--        <div class="public_dv_title disbet">-->
-<!--          <h2 id="goods-else">其他</h2>-->
-<!--          &lt;!&ndash;          <h2 v-if="item.gName == '荣桑'">美味熟食</h2>&ndash;&gt;-->
-<!--          &lt;!&ndash;          <h2 v-if="item.gName == '憨批荣荣'">休闲零食</h2>&ndash;&gt;-->
-<!--          &lt;!&ndash;          <h2 v-if="item.gName == '200斤的荣'">其他</h2>&ndash;&gt;-->
-<!--          <a href="#">查看更多 ></a>-->
-<!--        </div>-->
-<!--        <el-row>-->
-<!--          <el-col v-for="item in goodsData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">-->
-<!--            <br>-->
-<!--            <div @click="detail(item.gId)" v-if="item.gName == '胖达荣荣'">-->
-<!--              <el-card :body-style="{ padding: '0px' }" shadow="hover">-->
-<!--                <div class="goods-list-card-body">-->
-<!--     -->
-<!--                  <div class="goods-list-image-group">-->
-<!--                    <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>-->
-<!--                  </div>-->
-<!--                  <div class="goods-list-title">{{item.gName}}</div>-->
-<!--                  <div class="goods-list-description">{{item.gDescribe}}</div>-->
-<!--                  <div class="goods-list-price">-->
-<!--                    <span>&yen; {{item.gPriceOut}}元</span>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </el-card>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--      </div>-->
+      <!-- 美味熟食 -->
+      <div class="public_dv public_dv3">
+        <div class="public_dv_title disbet">
+          <h2 id="goods-cooked">美味熟食</h2>
+          <a href="javascript:" @click="moreCooked">查看更多 ></a>
+        </div>
+        <el-row>
+          <el-col v-for="item in CookedData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
+            <br>
+            <div @click="detail(item.gId)">
+              <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                <div class="goods-list-card-body">
+                  <div class="goods-list-tag-group">
+                    <el-badge class="item" v-if="item === 4" value="new"></el-badge>
+                    <el-badge class="item" v-if="item.gNum >= 400" value="hot"></el-badge>
+                    <el-badge class="item" v-else-if="item.gNum < 100 && item.gNum > 20" value="推荐"
+                              type="success"></el-badge>
+                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
+                  </div>
+                  <div class="goods-list-image-group">
+                    <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>
+                  </div>
+                  <div class="goods-list-title">{{item.gName}}</div>
+                  <div class="goods-list-description">{{item.gDescribe}}</div>
+                  <div class="goods-list-price">
+                    <span>&yen; {{item.gPriceOut}}元</span>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- 休闲零食 -->
+      <div class="public_dv public_dv4">
+        <div class="public_dv_title disbet">
+          <h2 id="goods-snacks">休闲零食</h2>
+          <!--          <h2>其他</h2>-->
+          <a href="javascript:" @click="moreSnacks">查看更多 ></a>
+        </div>
+        <el-row>
+          <el-col v-for="item in SnacksData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
+            <br>
+            <div @click="detail(item.gId)">
+              <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                <div class="goods-list-card-body">
+                  <div class="goods-list-tag-group">
+                    <el-badge class="item" v-if="item === 4" value="new"></el-badge>
+                    <el-badge class="item" v-if="item.gNum >= 400" value="hot"></el-badge>
+                    <el-badge class="item" v-else-if="item.gNum < 100 && item.gNum > 20" value="推荐"
+                              type="success"></el-badge>
+                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
+                  </div>
+                  <div class="goods-list-image-group">
+                    <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>
+                  </div>
+                  <div class="goods-list-title">{{item.gName}}</div>
+                  <div class="goods-list-description">{{item.gDescribe}}</div>
+                  <div class="goods-list-price">
+                    <span>&yen; {{item.gPriceOut}}元</span>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- 其他 -->
+      <div class="public_dv public_dv5">
+        <div class="public_dv_title disbet">
+          <h2 id="goods-else">其他</h2>
+          <a href="javascript:" @click="moreElse">查看更多 ></a>
+        </div>
+        <el-row>
+          <el-col v-for="item in ElseData.rows" :xs="24" :sm="7" :md="6" :lg="6" :xl="6">
+            <br>
+            <div @click="detail(item.gId)">
+              <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                <div class="goods-list-card-body">
+                  <div class="goods-list-tag-group">
+                    <el-badge class="item" v-if="item.warehouseNum === 0" value="缺货"></el-badge>
+                    <el-badge class="item" v-if="item.gNum >= 400" value="hot"></el-badge>
+                    <el-badge class="item" v-else-if="item.gNum < 100 && item.gNum > 20" value="推荐"
+                              type="success"></el-badge>
+                  </div>
+                  <div class="goods-list-image-group">
+                    <el-image class="goods-list-image" :src="getImg(item.gImg)"></el-image>
+                  </div>
+                  <div class="goods-list-title">{{item.gName}}</div>
+                  <div class="goods-list-description">{{item.gDescribe}}</div>
+                  <div class="goods-list-price">
+                    <span>&yen; {{item.gPriceOut}}元</span>
+                  </div>
+                </div>
+              </el-card>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+
     </div>
   </div>
 </template>
@@ -124,48 +192,157 @@
   export default {
     data() {
       return {
-        goodsData: [],
-        goodsDetailData: [],
+        timer: null, //定时器名称
+        FruitsData: [],
+        CookedData: [],
+        SnacksData: [],
+        ElseData: [],
         pageSize: '8',
-        layout: 'total, sizes, prev, pager, next, jumper',
-        total: 0,
+        goods_name: '',
+        parentTypeId: null
+        // layout: 'total, sizes, prev, pager, next, jumper',
+        // total: 0,
       }
     },
     methods: {
-      getGoodsData() {
+      //水果
+      goodsFruitsData() {
         var _this = this;
         var params = new URLSearchParams();
         params.append("rows", this.pageSize);
+        params.append("gParent", "1");
         this.$axios.post("queryAllGoods.action", params).then(function (result) {
-          _this.goodsData = result.data;
+          _this.FruitsData = result.data;
         }).catch(function (error) {
           alert(error)
         })
       },
-      getImg(url){
+      //更多 水果
+      moreFruits() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "1");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.FruitsData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //熟食
+      goodsCookedData() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", this.pageSize);
+        params.append("gParent", "2");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.CookedData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //更多 熟食
+      moreCooked() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "2");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.CookedData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //零食
+      goodsSnacksData() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", this.pageSize);
+        params.append("gParent", "3");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.SnacksData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //更多 零食
+      moreSnacks() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "3");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.SnacksData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //其他
+      goodsElseData() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", this.pageSize);
+        params.append("gParent", "5");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.ElseData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      //更多 其他
+      moreElse() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", "20");
+        params.append("gParent", "5");
+        this.$axios.post("queryAllGoods.action", params).then(function (result) {
+          _this.ElseData = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
+      },
+      getImg(url) {
         var img = url;
         var index = img.indexOf(',');
-        var imgurl ="";
-        if (index==-1){
+        var imgurl = "";
+        if (index == -1) {
           return img
         }
-        imgurl = img.substr(0,img.indexOf(','))
+        imgurl = img.substr(0, img.indexOf(','))
         return imgurl
       },
-      detail(goods_id){
+      detail(goods_id) {
         var _this = this;
         var params = new URLSearchParams();
         params.append("id", goods_id);
         this.$axios.post("queryGoodsById.action", params).then(function (result) {
-          _this.goodsDetailData = result.data;
+          var data = result.data;
+          _this.$router.push({path: '/shoppingsystem/detail', query: {data}})
         }).catch(function (error) {
           alert(error)
         })
-        this.$router.push("/shoppingsystem/detail")
       }
     },
+    // beforeDestroy(){
+    //   clearInterval(this.timer);
+    //   this.timer = null;
+    // },
     created() {
-      this.getGoodsData();
+      this.goodsFruitsData();
+      this.goodsCookedData();
+      this.goodsSnacksData();
+      this.goodsElseData();
+      // if (this.timer) {
+      //   clearInterval(this.timer)
+      // } else {
+      //   this.timer = setInterval(() => {
+      //     setTimeout(this.goodsFruitsData(), 0)
+      //     setTimeout(this.goodsCookedData(), 0)
+      //     setTimeout(this.goodsSnacksData(), 0)
+      //     setTimeout(this.goodsElseData(), 0)
+      //     console.log("刷新" + new Date());
+      //   }, 100000)
+      // }
     }
   }
 </script>
@@ -183,7 +360,7 @@
   .el-card {
     margin-left: 5px;
     width: 285px;
-    height: 300px;
+    height: 310px;
   }
 
   .goods-list-card-body {
@@ -227,42 +404,11 @@
 
   .goods-list-price, .goods-list-price span {
     margin: 8px 0;
-    font-size: 14px;
-    color: orange;
+    font-size: 15px;
+    color: #f72424;
   }
 
   /*********************************/
-
-  button,
-  a {
-    cursor: pointer;
-    outline: none !important;
-  }
-
-  a {
-    text-decoration: none !important;
-  }
-
-  input::-ms-clear,
-  input::-ms-reveal {
-    display: none !important;
-  }
-
-  div,
-  p,
-  input {
-    box-sizing: border-box;
-  }
-
-  input {
-    outline: none;
-  }
-
-  i {
-    background: url('https://img.inongjia.net/Content/mall/images/index_icon.png') no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-  }
 
   * {
     color: #333;
@@ -270,30 +416,8 @@
     box-sizing: border-box;
   }
 
-  ul,
-  li {
+  ul, li {
     list-style: none;
-  }
-
-  html,
-  body {
-    -ms-overflow-style: scrollbar;
-  }
-
-  .col2424 {
-    color: #f72424 !important;
-  }
-
-  .col6363 {
-    color: #F96363 !important;
-  }
-
-  .col903B {
-    color: #00903C !important;
-  }
-
-  .col222 {
-    color: #222 !important;
   }
 
   .wapper {
@@ -307,28 +431,12 @@
     margin-top: 24px;
   }
 
-  body {
-    width: 100%;
-    min-width: 1200px;
-    font-family: "Microsoft YaHei";
-  }
+  /*body {*/
+  /*  width: 100%;*/
+  /*  min-width: 1200px;*/
+  /*  font-family: "Microsoft YaHei";*/
+  /*}*/
 
-  a,
-  button,
-  textarea {
-    text-decoration: none;
-    outline: none;
-    font-family: "Microsoft YaHei";
-    border: none;
-  }
-
-  .overhide2 {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
 
   .overhide1 {
     overflow: hidden;
@@ -735,7 +843,7 @@
   }
 
   #index_wapper i {
-    background: url('https://img.inongjia.net/Content/mall/images/index_icon.png') no-repeat;
+    background: url('../../../assets/indexImg/index_icon.png') no-repeat;
     display: inline-block;
     vertical-align: middle;
   }

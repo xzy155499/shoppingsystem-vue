@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column prop="photo" label="照片">
         <template slot-scope="scope">
-        <el-avatar shape="square" :size="50" :src="scope.row.photo"></el-avatar>
+          <el-avatar shape="square" :size="50" :src="scope.row.photo"></el-avatar>
         </template>
       </el-table-column>
       <el-table-column prop="emp_age" label="年龄" sortable>
@@ -39,8 +39,8 @@
       </el-table-column>
       <el-table-column prop="account" label="账号">
       </el-table-column>
-<!--      <el-table-column prop="pass" label="密码">-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column prop="pass" label="密码">-->
+      <!--      </el-table-column>-->
       <el-table-column prop="isdelete" label="情况">
         <template slot-scope="scope">
           <el-tag
@@ -79,7 +79,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        <!-- 照片 -->
+        <div class="img-upload">
+          <el-upload
+            class="avatar-uploader"
+            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
+            :show-file-list="false"
+            :on-success="addHandleAvatarSuccess">
+            <img v-if="ImageUrl" :src="ImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
         <el-row>
           <el-col :span="12">
             <el-form-item label="年龄：" prop="emp_age">
@@ -161,7 +171,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-
+        <!-- 修改照片 -->
+        <div class="img-upload">
+          <el-upload
+            class="avatar-uploader"
+            action="https://www.mocky.io/v2/5185415ba171ea3a00704eed/posts/"
+            :show-file-list="false"
+            :on-success="addHandleAvatarSuccess">
+            <img v-if="ImageUrl" :src="ImageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </div>
         <el-row>
           <el-col :span="12">
             <el-form-item label="年龄：" prop="emp_age">
@@ -239,7 +259,7 @@
   export default {
     data() {
       return {
-        options:[],
+        options: [],
         emp_name: '',
         emp_sex: '',
         pageIndex: '1',
@@ -248,17 +268,20 @@
         pageVo: {},
         addDialogVisible: false,
         editDialogVisible: false,
+        ImageUrl: '',
+        // editImageUrl: '',
+        file: [],
         //添加员工表单数据
         addEmpForm: {
           emp_name: '',
-          // photo: '',
+          file: [],
           emp_age: '18',
           emp_sex: '男',
           id_number: '',
           phone: '',
           address: '',
-          // account: '',
-          // pass: '',
+          account: '',
+          pass: '',
         },
         //编辑员工表单数据
         editEmpForm: {},
@@ -284,13 +307,13 @@
           address: [
             {required: true, message: '请选择地址信息', trigger: 'change'}
           ],
-          // account: [
-          //   {required: true, message: '请输入账号', trigger: 'blur'},
-          //   {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
-          // ],
-          // pass: [
-          //   {required: true, message: '请输入密码', trigger: 'blur'}
-          // ],
+          account: [
+            {required: true, message: '请输入账号', trigger: 'blur'},
+            {min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur'}
+          ],
+          pass: [
+            {required: true, message: '请输入密码', trigger: 'blur'}
+          ],
         }
       }
     },
@@ -298,28 +321,28 @@
       getDate() {
         var _this = this;
         this.$axios.post("queryareaAll.action").then(function (result) {
-          var da =result.data;
-          var d =[];
-          for (let i = 0; i <da.length ; i++) {
-            var d1 =[]
-            for (let j = 0; j <da[i].area.length ; j++) {
-              var d2 =[]
-              for (let k = 0; k <da[i].area[j].area.length ; k++) {
-                d2.push({value:da[i].area[j].area[k].id,label:da[i].area[j].area[k].name})
+          var da = result.data;
+          var d = [];
+          for (let i = 0; i < da.length; i++) {
+            var d1 = []
+            for (let j = 0; j < da[i].area.length; j++) {
+              var d2 = []
+              for (let k = 0; k < da[i].area[j].area.length; k++) {
+                d2.push({value: da[i].area[j].area[k].name, label: da[i].area[j].area[k].name})
               }
-              if (d2.length==0){
-                d1.push({value:da[i].area[j].id,label:da[i].area[j].name})
-              }else{
-                d1.push({value:da[i].area[j].id,label:da[i].area[j].name,children:d2})
+              if (d2.length == 0) {
+                d1.push({value: da[i].area[j].name, label: da[i].area[j].name})
+              } else {
+                d1.push({value: da[i].area[j].name, label: da[i].area[j].name, children: d2})
               }
             }
-            if (d1.length==0){
-              d.push({value:da[i].id,label:da[i].name})
-            }else{
-              d.push({value:da[i].id,label:da[i].name,children:d1})
+            if (d1.length == 0) {
+              d.push({value: da[i].name, label: da[i].name})
+            } else {
+              d.push({value: da[i].name, label: da[i].name, children: d1})
             }
           }
-          _this.options=d;
+          _this.options = d;
         }).catch(function (error) {
           alert(error)
         })
@@ -347,10 +370,18 @@
         this.pageIndex = page;
         this.getEmpData();
       },
-      changeSize(size){
+      changeSize(size) {
         this.pageSize = size;
         this.getEmpData();
       },
+      addHandleAvatarSuccess(response, file, fileList) {
+        this.ImageUrl = URL.createObjectURL(file.raw);
+        this.file = file;
+      },
+      // editHandleAvatarSuccess(response, file, fileList) {
+      //   this.editImageUrl = URL.createObjectURL(file.raw);
+      //   this.file = file;
+      // },
       //删除
       del(emp_id) {
         this.$confirm('是否解雇该员工?', '提示', {
@@ -379,6 +410,17 @@
       },
       //打开添加窗口 编辑窗口
       openAddEmpDialog() {
+        this.addEmpForm = {
+          emp_name: '',
+          emp_age: '18',
+          emp_sex: '男',
+          id_number: '',
+          phone: '',
+          address: '',
+          account: '',
+          pass: '',
+        }
+        this.ImageUrl = '';
         this.addDialogVisible = true
       },
       openEditEmpDialog(data) {
@@ -394,8 +436,18 @@
             //将需要提交的表单数据 快速组装为H5定义的类型FormData
             Object.keys(_this.addEmpForm).forEach((key) => {
               formData.append(key, _this.addEmpForm[key]);
+              console.log(key, _this.addEmpForm[key])
             });
-            _this.$axios.post("addEmp.action", formData).then(function (result) {
+            formData.append("file", _this.file.raw);
+            console.log(_this.file.raw)
+            this.$axios({
+              method: 'post',
+              url: 'addEmp.action',
+              data: formData,
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }).then(function (result) {
               if (result.data > 0) {
                 _this.$message.success('添加成功');
               } else {
@@ -417,11 +469,12 @@
             let formData = new FormData();
             //将需要提交的表单数据 快速组装为H5定义的类型FormData
             Object.keys(_this.editEmpForm).forEach((key) => {
-              if(key == 'last_time' || key == 'this_time'){
+              if (key == 'last_time' || key == 'this_time') {
                 return;
               }
               formData.append(key, _this.editEmpForm[key]);
             });
+            formData.append("file", _this.file.raw);
             _this.$axios.post("updateEmpByEmpId.action", formData).then(function (result) {
               if (result.data > 0) {
                 _this.$message.success('编辑成功');
@@ -445,5 +498,36 @@
 </script>
 
 <style>
+  .img-upload {
+    position: absolute;
+    left: 580px;
+    top: 85px;
+  }
 
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 220px;
+    height: 220px;
+    line-height: 220px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 200px;
+    height: 200px;
+    display: block;
+  }
 </style>

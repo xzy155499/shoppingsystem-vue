@@ -16,7 +16,8 @@
     "jquery": "^3.5.1",
     "vue": "^2.5.11",
     "vue-baidu-map": "^0.21.22",
-    "vue-echarts": "^5.0.0-beta.0"
+    "vue-echarts": "^5.0.0-beta.0",
+    "vue2.0-zoom": "^2.1.1"
   },
   "browserslist": [
     "> 1%",
