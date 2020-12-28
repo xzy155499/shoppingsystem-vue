@@ -162,6 +162,7 @@
           this.index = 1;
           this.getData();
         }, getImg(scope) {
+
           var img = scope.row.gImg;
           var index = img.indexOf(',');
           var imgurl = "";

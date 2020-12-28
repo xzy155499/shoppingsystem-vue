@@ -43,7 +43,6 @@
           </el-table-column>
         </el-table>
       </el-card>
-
     </el-col>
 
     <el-col :span="15" style="margin-top: 20px">
@@ -58,19 +57,47 @@
         </el-card>
       </div>
       <!-- 荣布斯榜 -->
-      <el-card style="height: 290px" shadow="hover">
-        <div id="main"  style="float:left;width:100%;height: 300%"></div>
+      <el-card style="height: 584px" shadow="hover">
+        <div id="main"  style="width:100%;height: 600%"></div>
       </el-card>
 
-      <div class="graph">
-        <!-- 活跃用户情况 -->
-        <el-card style="height: 270px" shadow="hover">
-        </el-card>
-        <!-- 销售情况 -->
-        <el-card style="height: 270px" shadow="hover">
-        </el-card>
+<!--      <div class="graph">-->
+<!--        &lt;!&ndash; 活跃用户情况 &ndash;&gt;-->
+<!--        <label>今日新增用户</label>-->
+<!--        <el-card style="height: 270px" shadow="hover">-->
+<!--          <el-table-->
+<!--            ref="multipleTable"-->
+<!--            :data="dayUserData"-->
+<!--            tooltip-effect="dark"-->
+<!--            style="width: 100%">-->
 
-      </div>
+<!--            <el-table-column-->
+<!--              prop="user_name"-->
+<!--              label="姓名">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="user_sex"-->
+<!--              label="性别">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="birth_date"-->
+<!--              label="出生日期">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="phone"-->
+<!--              label="电话号码">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              prop="account"-->
+<!--              label="账号">-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
+<!--        </el-card>-->
+<!--        &lt;!&ndash; 销售情况 &ndash;&gt;-->
+<!--        <el-card style="height: 270px" shadow="hover">-->
+<!--        </el-card>-->
+
+<!--      </div>-->
 
     </el-col>
 
@@ -138,6 +165,7 @@
         tableData: [],
         map:{},
         rbsData:[],
+        dayUserData:[],
       }
     },
     methods: {
@@ -156,6 +184,11 @@
         }).catch(function (error) {
           alert(error)
         })
+        // this.$axios.post("queDayUser.action").then(function (result) {
+        //   _this.dayUserData = result.data;
+        // }).catch(function (error) {
+        //   alert(error);
+        // })
       },//初始化数据
       initData() {
         // 基于准备好的dom，初始化echarts实例

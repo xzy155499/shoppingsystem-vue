@@ -16,8 +16,10 @@ import WarehouseList from "../components/ware/warehouse";
 import StorageWarehouse from "../components/ware/storageWarehouse";
 import IntoWarehouse from "../components/ware/IntoWarehouse";
 import AllowMerchantsEnter from "../components/merchants/AllowMerchantsEnter";
+import InventoryTurn from "../components/ware/inventoryTurn";
 //报表
 import StoresStatistical from "../components/statistical/stores";
+import GoodsStatistical from "../components/statistical/goods";
 import WarehouseStatistical from "../components/statistical/warehouse";
 //后端 商家
 import Merchantslist from "../components/merchants/merchantslist";
@@ -33,8 +35,10 @@ import MerchantsMonthByMid from "../components/merchants/merchantsMonthByMid";
 import Index from "../view/qianduan/index/index.vue";
 import Goods from "../view/qianduan/goods/goods.vue";
 import Detail from "../view/qianduan/detail/goodsDetail.vue";
-
-
+import ApplyMerchants from "../components/merchants/applyMerchants";
+import Test from "../view/qianduan/test/test";
+//个人中心
+import PersonalCenter from "../view/qianduan/personal/personalCenter";
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -105,12 +109,17 @@ export default new VueRouter({
         {
           path: "/shoppingsystem/warehouse", component: WarehouseList
         },{
-          path: '/shoppingmerchants/stores', component: StoresStatistical,
+          path: '/shoppingsystem/storesStatistical', component: StoresStatistical,
         },{
-          path: '/shoppingmerchants/warehouse', component: WarehouseStatistical,
+          path: '/shoppingsystem/goodsStatistical', component: GoodsStatistical,
+        },{
+          path: '/shoppingsystem/warehouseStatistical', component: WarehouseStatistical,
         },
         {
-          path: '/shoppingmerchants/allowMerchantsEnter', component: AllowMerchantsEnter,
+          path: '/shoppingsystem/allowMerchantsEnter', component: AllowMerchantsEnter,
+        },
+        {
+          path: '/shoppingsystem/inventoryTurn', component: InventoryTurn,
         },
 
       ]
@@ -160,9 +169,18 @@ export default new VueRouter({
         {
           path: '/shoppingsystem/detail',
           component: Detail
+        },{
+          path: '/shoppingsystem/personalCenter',
+          component: PersonalCenter
         },
-
       ]
+    },{
+      path: '/shoppingsystem/applyMerchants',
+      component: ApplyMerchants
+    },
+    {
+      path: '/shoppingsystem/test',
+      component: Test
     },
   ]
 })
