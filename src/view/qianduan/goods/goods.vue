@@ -51,25 +51,6 @@
             </li>
           </ul>
         </div>
-        <!--        <el-row>-->
-        <!--          <el-col :xs="24" :sm="7" :md="6" :lg="6" :xl="6">-->
-        <!--            <br>-->
-        <!--            <div id="everyday-goods" @click="detail(item.gId)">-->
-        <!--              <el-card  :body-style="{ padding: '0px' }" shadow="hover">-->
-        <!--                <div class="goods-list-card-body">-->
-        <!--                  <div class="goods-list-image-group">-->
-        <!--                    <el-image class="goods-list-image" src="../src/assets/img/orange.jpg"></el-image>-->
-        <!--                  </div>-->
-        <!--                  <div class="goods-list-title">甜橙</div>-->
-        <!--                  <div class="goods-list-description">好吃的甜橙</div>-->
-        <!--                  <div class="goods-list-price">-->
-        <!--                    <span>&yen; 25元</span>-->
-        <!--                  </div>-->
-        <!--                </div>-->
-        <!--              </el-card >-->
-        <!--            </div>-->
-        <!--          </el-col>-->
-        <!--        </el-row>-->
       </div>
       <!-- 新鲜水果 -->
       <div class="public_dv public_dv2">
@@ -371,21 +352,10 @@
 
 <style>
 
-  /*.icon-haixian{*/
-  /*  background:url('../../assets/CarouselImg/haixian.png') no-repeat center center;*/
-  /*}*/
   * {
     margin: 0;
     padding: 0;
   }
-
-  #everyday-goods > .el-card {
-    background-color: #FFF;
-    color: #303133;
-    -webkit-transition: .3s;
-    transition: .3s;
-  }
-
   .el-card {
     margin-left: 5px;
     width: 285px;
@@ -504,39 +474,12 @@
     background-position: -71px -23px;
   }
 
-  #index_wapper .index_nav li a .index_nav_icon02 {
-    background-position: -71px -67px;
-  }
-
   #index_wapper .index_nav li a .index_nav_icon03 {
     background-position: -71px -110px;
   }
 
   #index_wapper .index_nav li a .index_nav_icon04 {
     background-position: -71px -150px;
-  }
-
-  #index_wapper #index_swiper_01 {
-    margin-top: 40px;
-    height: 60px;
-    width: 100%;
-  }
-
-  #index_wapper #index_swiper_01 .swiper-slide {
-    background: #fff;
-    /* Center slide text vertically */
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
   }
 
   #index_wapper #index_swiper_01 ul {
@@ -657,12 +600,6 @@
     font-size: 18px;
   }
 
-
-  #index_wapper .This_activity .This_activity_right .index_swiper_02-next:hover,
-  #index_wapper .This_activity .This_activity_right .index_swiper_02-prev:hover {
-    background: #ccc;
-  }
-
   #index_wapper .This_activity .This_activity_right .index_swiper_02-next span,
   #index_wapper .This_activity .This_activity_right .index_swiper_02-prev span {
     border: solid #fff;
@@ -672,17 +609,6 @@
     transform: rotate(45deg);
   }
 
-  #index_wapper .This_activity .This_activity_right .index_swiper_02-next {
-    left: -9px;
-    top: 100px;
-    transform: rotate(90deg);
-  }
-
-  #index_wapper .This_activity .This_activity_right .index_swiper_02-prev {
-    right: -9px;
-    top: 100px;
-    transform: rotate(-90deg);
-  }
 
   #index_wapper .main_product {
     padding: 40px 0 0 0;
@@ -823,11 +749,6 @@
 
   #index_wapper .public_dv .public_dv_title a:hover {
     color: #049948;
-  }
-
-  #index_wapper .public_dv .public_list {
-    flex-wrap: wrap;
-    justify-content: flex-start;
   }
 
   #index_wapper .public_dv .public_list li {

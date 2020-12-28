@@ -24,8 +24,9 @@
             <div>
               <h2>{{item.gName}}</h2>
               <p>{{item.gDescribe}}</p>
-              <p>产品周期:&emsp;<span class="col222">12月-次年3月</span></p>
               <p>产&emsp;&emsp;地:&emsp;<span class="col222">湖南长沙</span></p>
+              <!--              <p>产品周期:&emsp;<span class="col222">12月-次年3月</span></p>-->
+              <p>库&emsp;&emsp;存:&emsp;<span class="col222" >{{item.warehouseNum}}</span></p>
             </div>
           </div>
 
@@ -52,11 +53,14 @@
 									<em :title="item.gName">
                     <el-image :src="getFirstImg(item.gImg)"></el-image>
                   </em>
-									{{item.gName}}
+                  <span class="col222">{{item.gName}}</span>
 								</span>
                 <span style="color:#f72424">总计：&yen; {{goods_SumPrice}}</span>
-                <el-input-number @change="sumPrice(item.gPriceOut)" v-model="num" :min="0"
-                                 :max="1000"></el-input-number>
+                <el-input-number v-if="item.warehouseNum > 0"  @change="sumPrice(item.gPriceOut)"
+                                 v-model="num" :min="0"
+                                 :max="item.warehouseNum"></el-input-number>
+                <el-input-number v-else disabled="true" @change="sumPrice(item.gPriceOut)" v-model="num" :min="0"
+                                 :max="item.warehouseNum"></el-input-number>
               </div>
             </div>
           </div>
@@ -197,7 +201,7 @@
           })
           return
         }
-        if(this.$parent.user == null || this.$parent.user === ''){
+        if (this.$parent.user == null || this.$parent.user === '') {
           this.$router.push("/shoppingsystem/indexLogin")
           return;
         }
@@ -211,7 +215,7 @@
         params1.append("num", num);
         params1.append("sumPrice", this.goods_SumPrice);
         this.$axios.post("gIdExistShoppingCart.action", params1).then((result) => {
-          if (result.data != '' || result.data !=undefined  || result.data != null) {
+          if (result.data != '' && result.data != undefined) {
             var params2 = new URLSearchParams();
             params2.append("id", result.data.id);
             params2.append("num", num + result.data.num);
@@ -229,7 +233,6 @@
           } else {
             _this.$axios.post("addShoppingCart.action", params1).then((result) => {
               if (result.data > 0) {
-                _this.$message.success("加入购物车成功");
                 _this.$parent.getShoppingCountData();
               } else {
                 _this.$message.error("加入购物车成功,未知错误,请重试");
@@ -238,6 +241,7 @@
               alert(error);
             })
           }
+          this.$router.push("/shoppingsystem/cart")
         }).catch((error) => {
           alert(error);
         })
@@ -251,7 +255,7 @@
           })
           return
         }
-        if(this.$parent.user == null || this.$parent.user === ''){
+        if (this.$parent.user == null || this.$parent.user === '') {
           this.$router.push("/shoppingsystem/indexLogin")
           return;
         }
@@ -265,11 +269,11 @@
         params1.append("num", num);
         params1.append("sumPrice", this.goods_SumPrice);
         this.$axios.post("gIdExistShoppingCart.action", params1).then((result) => {
-          if (result.data !== '' || result.data !== null) {
+          if (result.data != "" && result.data != undefined) {
             var params2 = new URLSearchParams();
             params2.append("id", result.data.id);
             params2.append("num", num + result.data.num);
-            params2.append("sumPrice", (num + result.data.num) * item.gPriceOut);
+            params2.append("sumPrice", (num * 1 + result.data.num * 1) * item.gPriceOut);
             _this.$axios.post("updateGoodsNumAndSumPrice.action", params2).then((result) => {
               if (result.data > 0) {
                 _this.$message.success("加入购物车成功");
@@ -314,11 +318,20 @@
     font-size: 16px;
   }
 
+  /* 居中 */
+  .wapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-width: 1200px;
+  }
+
   .col222 {
     margin-left: 10px;
     font-size: 14px;
     color: #222 !important;
   }
+
   #index_wapper {
     width: 100%;
     padding-top: 20px;
