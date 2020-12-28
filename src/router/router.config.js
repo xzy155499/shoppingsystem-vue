@@ -34,7 +34,6 @@ import Detail from "../view/qianduan/detail/goodsDetail.vue";
 import Cart from "../view/qianduan/order/shoppingCart.vue";
 import OrderBuy from "../view/qianduan/buy/index.vue";
 
-import ShoppingCart from "../view/shopping/shoppingCart";
 
 Vue.use(VueRouter)
 
@@ -51,7 +50,7 @@ export default new VueRouter({
     {path: "/", redirect: "/shoppingsystem/login"},
     //登录路由
     {path: '/shoppingsystem/login', component: Login,},
-    //总店 首页路由
+    //总店 首页路由 ----------------------------------------------------
     {
       path: '/shoppingsystem/home', component: Home,
       children: [
@@ -102,11 +101,24 @@ export default new VueRouter({
         },
         {
           path: "/shoppingsystem/warehouse", component: WarehouseList
+        },{
+          path: '/shoppingsystem/storesStatistical', component: StoresStatistical,
+        },{
+          path: '/shoppingsystem/goodsStatistical', component: GoodsStatistical,
+        },{
+          path: '/shoppingsystem/warehouseStatistical', component: WarehouseStatistical,
+        },
+        {
+          path: '/shoppingsystem/allowMerchantsEnter', component: AllowMerchantsEnter,
+        },
+        {
+          path: '/shoppingsystem/inventoryTurn', component: InventoryTurn,
         }
+
 
       ]
     },
-    //商家路由
+    //商家路由 ----------------------------------------------------
     {
       path: "/shoppingmerchants/merchantsLogin", component: MerchantsLogin
     },
@@ -134,10 +146,7 @@ export default new VueRouter({
         }
       ]
     },
-    {
-      path: '/shopping/shoppingCart', component: ShoppingCart,
-    },
-    //前端路由
+    //前端路由 ----------------------------------------------------
     {
       path: '/shoppingsystem/index', component: Index,
       children: [
