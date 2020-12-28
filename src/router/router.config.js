@@ -29,7 +29,9 @@ import MerchantsMonthByMid from "../components/merchants/merchantsMonthByMid";
 import Index from "../view/qianduan/index/index.vue";
 import Goods from "../view/qianduan/goods/goods.vue";
 import Detail from "../view/qianduan/detail/goodsDetail.vue";
+import Cart from "../view/qianduan/order/shoppingCart.vue";
 import indexLogin from "../view/qianduan/login/Login.vue";
+import indexRegister from "../view/qianduan/register/register.vue";
 import ShoppingCart from "../view/shopping/shoppingCart";
 
 Vue.use(VueRouter)
@@ -119,7 +121,6 @@ export default new VueRouter({
           path: '/shoppingmerchants/merchantsDelivery',
           component: MerchantsDelivery
         },
-        ,
         {
           path: "/shoppingmerchants/merchantsReceipt", component: MerchantsReceipt
         },
@@ -143,16 +144,20 @@ export default new VueRouter({
           component: Goods
         },
         {
-          path: '/shoppingsystem/index',
-          component: Goods
-        },
-        {
           path: '/shoppingsystem/detail',
           component: Detail
         },
         {
+          path: '/shoppingsystem/cart',
+          component: Cart
+        },
+        {
           path: '/shoppingsystem/indexLogin',
           component: indexLogin
+        },
+        {
+          path: '/shoppingsystem/indexRegister',
+          component: indexRegister
         },
       ]
     },

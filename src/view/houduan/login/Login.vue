@@ -102,11 +102,12 @@
                 _this.$router.push("/shoppingsystem/home")
               } else {
                 _this.$alert(result.data.msg, '提示', {
-                  confirmButtonText: 'ok'
+                  confirmButtonText: '确认'
                 })
                 _this.loading = false
               }
             }).catch(function (error) {
+              _this.loading = false
               alert(error);
             });
           }

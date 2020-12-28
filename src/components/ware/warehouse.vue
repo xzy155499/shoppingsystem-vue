@@ -30,9 +30,9 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="warning" icon="el-icon-edit" @click="updshow(scope.row)"  plain circle></el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="del(scope.row.wId)" plain circle ></el-button>
-          <el-button  icon="el-icon-search" @click="que(scope.row.wId)" circle plain></el-button>
+          <el-button size="mini" type="warning" plain @click="updshow(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" plain @click="del(scope.row.wId)">删除</el-button>
+          <el-button  size="mini" type="primary" plain @click="que(scope.row.wId)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>

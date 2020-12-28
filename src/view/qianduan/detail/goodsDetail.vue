@@ -36,7 +36,7 @@
 
           <div class="details_msg_dv02">
             <em>发&ensp;货&ensp;地:</em>
-            <span><span class="col222">湖南长沙</span> 丨 发货时效：<span class="col222">24小时内出单号48小时内发货</span></span>
+            <span><span class="col222">湖南长沙</span> 丨 发货时间：<span class="col222">48小时内发货</span></span>
           </div>
 
           <div class="details_msg_dv02">
@@ -62,10 +62,8 @@
           </div>
 
           <div class="details_msg_dv03">
-            <el-button
-              type="danger">立即购买
-            </el-button>
-            <el-button type="danger" icon="el-icon-shopping-cart-2">加入购物车</el-button>
+            <el-button type="danger" @click="buy(item)">立即购买</el-button>
+            <el-button type="danger" @click="addCart(item)" icon="el-icon-shopping-cart-2">加入购物车</el-button>
           </div>
 
         </div>
@@ -131,37 +129,43 @@
 </template>
 
 <script>
-  // import imgZoom from 'vue2.0-zoom'
+  import imgZoom from 'vue2.0-zoom'
 
   export default {
-    props: {
-      configs: {
-        width: 500,
-        height: 380,
-        maskWidth: 100,
-        maskHeight: 100,
-        maskColor: 'red',
-        maskOpacity: 0.2
-      }
-    },
+    // props: {
+    //   configs: {
+    //     width: 500,
+    //     height: 380,
+    //     maskWidth: 100,
+    //     maskHeight: 100,
+    //     maskColor: 'red',
+    //     maskOpacity: 0.2
+    //   }
+    // },
     data() {
       return {
-        goodsDetailData: [],
+        goodsDetailData: JSON.parse(sessionStorage.getItem('goodsDetailData')),
         goods_SumPrice: 0,
         num: 0,
+        firstImg: '',
       }
     },
     methods: {
       goBack() {
         this.$router.push("/shoppingsystem/index")
       },
+      // getGoodsDetailData(data){
+      //   console.log(data)
+      //   this.data  = data;
+      // },
       //拿到第一个图片
       getFirstImg(url) {
         let img = url.split(",");
-        var firstImg = img[1]
+        var firstImg = img[0]
         if (img.length == 1) {
           firstImg = img[0]
         }
+        this.firstImg = firstImg;
         // var img = url;
         // var index = img.indexOf(',');
         // var firstImg = "";
@@ -176,16 +180,128 @@
       getImg(url) {
         let img = url.split(",");
         let imgUrl = img.slice(1, img.length)
-        if (img.length == 1)
+        if (img.length === 1)
           imgUrl = img.slice(0, img.length)
         return imgUrl;
       },
       //计算总价
       sumPrice(goods_Price) {
         this.goods_SumPrice = Number(goods_Price) * Number(this.num)
+      },
+      //直接购买
+      buy(item) {
+        let num = this.num;
+        if (num === 0) {
+          this.$alert("请输入你需要购买的数量！", "提示", {
+            confirmButtonText: '确认'
+          })
+          return
+        }
+        if(this.$parent.user == null || this.$parent.user === ''){
+          this.$router.push("/shoppingsystem/indexLogin")
+          return;
+        }
+        var _this = this;
+        var params1 = new URLSearchParams();
+        params1.append("uid", this.$parent.user.user_id);
+        params1.append("gId", item.gId);
+        params1.append("gName", item.gName);
+        params1.append("gImg", this.firstImg);
+        params1.append("gPrice", item.gPriceOut);
+        params1.append("num", num);
+        params1.append("sumPrice", this.goods_SumPrice);
+        this.$axios.post("gIdExistShoppingCart.action", params1).then((result) => {
+          if (result.data != '' || result.data !=undefined  || result.data != null) {
+            var params2 = new URLSearchParams();
+            params2.append("id", result.data.id);
+            params2.append("num", num + result.data.num);
+            params2.append("sumPrice", (num + result.data.num) * item.gPriceOut);
+            _this.$axios.post("updateGoodsNumAndSumPrice.action", params2).then((result) => {
+              if (result.data > 0) {
+                _this.$message.success("加入购物车成功");
+                _this.$parent.getShoppingCountData();
+              } else {
+                _this.$message.error("加入购物车成功,未知错误,请重试");
+              }
+            }).catch((error) => {
+              alert(error);
+            })
+          } else {
+            _this.$axios.post("addShoppingCart.action", params1).then((result) => {
+              if (result.data > 0) {
+                _this.$message.success("加入购物车成功");
+                _this.$parent.getShoppingCountData();
+              } else {
+                _this.$message.error("加入购物车成功,未知错误,请重试");
+              }
+            }).catch((error) => {
+              alert(error);
+            })
+          }
+        }).catch((error) => {
+          alert(error);
+        })
+      },
+      //加入购物车
+      addCart(item) {
+        let num = this.num;
+        if (num === 0) {
+          this.$alert("请输入你需要购买的数量！", "提示", {
+            confirmButtonText: '确认'
+          })
+          return
+        }
+        if(this.$parent.user == null || this.$parent.user === ''){
+          this.$router.push("/shoppingsystem/indexLogin")
+          return;
+        }
+        var _this = this;
+        var params1 = new URLSearchParams();
+        params1.append("uid", this.$parent.user.user_id);
+        params1.append("gId", item.gId);
+        params1.append("gName", item.gName);
+        params1.append("gImg", this.firstImg);
+        params1.append("gPrice", item.gPriceOut);
+        params1.append("num", num);
+        params1.append("sumPrice", this.goods_SumPrice);
+        this.$axios.post("gIdExistShoppingCart.action", params1).then((result) => {
+          if (result.data !== '' || result.data !== null) {
+            var params2 = new URLSearchParams();
+            params2.append("id", result.data.id);
+            params2.append("num", num + result.data.num);
+            params2.append("sumPrice", (num + result.data.num) * item.gPriceOut);
+            _this.$axios.post("updateGoodsNumAndSumPrice.action", params2).then((result) => {
+              if (result.data > 0) {
+                _this.$message.success("加入购物车成功");
+                _this.$parent.getShoppingCountData();
+              } else {
+                _this.$message.error("加入购物车成功,未知错误,请重试");
+              }
+            }).catch((error) => {
+              alert(error);
+            })
+          } else {
+            _this.$axios.post("addShoppingCart.action", params1).then((result) => {
+              if (result.data > 0) {
+                _this.$message.success("加入购物车成功");
+                _this.$parent.getShoppingCountData();
+              } else {
+                _this.$message.error("加入购物车成功,未知错误,请重试");
+              }
+            }).catch((error) => {
+              alert(error);
+            })
+          }
+        }).catch((error) => {
+          alert(error);
+        })
       }
     },
     created() {
+      // this.bus.$on("goodsDetailData",this.getGoodsDetailData.bind(this));
+      var goodsDetailData = this.goodsDetailData
+      if (goodsDetailData === null || goodsDetailData === undefined)
+        this.$router.push("/shoppingsystem/index")
 
     },
 
@@ -202,6 +318,12 @@
     margin-left: 10px;
     font-size: 14px;
     color: #222 !important;
+  }
+  #index_wapper {
+    width: 100%;
+    padding-top: 20px;
+    text-align: center;
+    position: relative;
   }
 
   .details .details_msg .details_msg_left {

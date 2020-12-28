@@ -112,7 +112,7 @@
         _this.$alert("退出成功！", "提示", {
           confirmButtonText: 'ok'
         })
-        _this.$router.push("/shoppingsystem/login");
+        _this.$router.push("/shoppingmerchants/merchantsLogin");
       },
       //获取后端菜单数据信息
       getMenuData() {

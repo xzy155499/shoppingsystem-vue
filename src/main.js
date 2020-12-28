@@ -20,13 +20,20 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/component/toolbox'
 import 'echarts/lib/component/legend'
 
+//滑动图片验证插件
+import SlideVerify from 'vue-monoplasty-slide-verify';
+//兄弟路由传值
+import bus from './bus'
+Vue.prototype.bus=bus;
+
+
 Vue.prototype.$echarts =echarts;
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: 'tS9gxkjNh10upXP1PUoLMWDnCu4GKK5x'
 })
 
-
+Vue.use(SlideVerify);
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
