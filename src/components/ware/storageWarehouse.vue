@@ -162,6 +162,7 @@
           this.index = 1;
           this.getData();
         }, getImg(scope) {
+
           var img = scope.row.gImg;
           var index = img.indexOf(',');
           var imgurl = "";
@@ -171,6 +172,7 @@
           imgurl = img.substr(0, img.indexOf(','))
           return imgurl
         },updateGoods(id){
+          this.index=1;
           this.ids.push({id:id,num:1});
           this.getData();
         },delGoods(id){
