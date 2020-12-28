@@ -110,16 +110,16 @@
       //选择商品 计算总计 bug
       goodsSumPriceAndGoodsNum(id) {
         this.goodsSumPrice = 0
-        var num=0;
+        var num = 0;
         for (let i = 0; i < this.shoppingCartData.length; i++) {
           if (this.shoppingCartData[i].id == id) {
             this.shoppingCartData[i].sumPrice = this.shoppingCartData[i].num * this.shoppingCartData[i].gPrice;
           }
           for (let j = 0; j < this.select.length; j++) {
             if (this.shoppingCartData[i].id == this.select[j].id) {
-              this.goodsSumPrice += this.select[i].num * this.select[i].gPrice;
+              this.goodsSumPrice += this.select[j].num * this.select[j].gPrice;
 
-              num+=this.select[j].num;
+              num += this.select[j].num;
             }
           }
         }
@@ -171,6 +171,9 @@
         var _this = this;
         this.selectGoodsNum = 0;
         this.goodsSumPrice = 0;
+        this.gIdArr = [];
+        this.numArr = [];
+        this.sumArr = [];
         this.selectGoodsCount = selection.length;
         selection.forEach((item) => {
           _this.goodsSumPrice += item.sumPrice;
@@ -179,7 +182,6 @@
           _this.sumArr.push(item.sumPrice);
           _this.selectGoodsNum += item.num;
         })
-        console.log("单选" + this.gIdArr + this.numArr + this.sumArr);
       },
       //用户全部选择
       selectAllGoods(selection) {
@@ -187,6 +189,9 @@
         var _this = this;
         this.goodsSumPrice = 0;
         this.selectGoodsNum = 0;
+        this.gIdArr = [];
+        this.numArr = [];
+        this.sumArr = [];
         this.selectGoodsCount = selection.length;
         selection.forEach((item) => {
           _this.goodsSumPrice += item.sumPrice;
@@ -195,7 +200,6 @@
           _this.sumArr.push(item.sumPrice);
           _this.selectGoodsNum += item.num;
         })
-        console.log("全选" +this.gIdArr + this.numArr + this.sumArr)
       },
       //结算 支付
       pay() {
@@ -217,19 +221,39 @@
         var _this = this;
         var params1 = new URLSearchParams();
         params1.append("orderId", orderId);
-        params1.append("userId",this.user.user_id);
-        params1.append("sum",this.goodsSumPrice);
+        params1.append("userId", this.user.user_id);
+        params1.append("sum", this.goodsSumPrice);
 
+        var gIdList = "";
+        var numList = "";
+        var sumList = "";
+        this.gIdArr.forEach((item) => {
+          gIdList += item + ','
+        })
+
+        this.numArr.forEach((item) => {
+          numList += item + ','
+        })
+
+        this.sumArr.forEach((item) => {
+          sumList += item + ','
+        })
+        // console.log("商品id" + gIdList + '商品数量' + numList + '商品小计' + sumList);
         var params2 = new URLSearchParams();
-        params2.append("orderId",orderId);
-        params2.append("gIdArr",this.gIdArr);
-        params2.append("numArr",this.numArr);
-        params2.append("sumArr",this.sumArr);
-        console.log(params1)
-        console.log(params2)
+        params2.append("orderId", orderId);
+        params2.append("gIdList", gIdList);
+        params2.append("numList", numList);
+        params2.append("sumList", sumList);
         this.$axios.post("addOrderInfo.action", params1).then(function (result) {
           if (result.data > 0) {
-            _this.$axios.post("addOrderInfo.action", params2).then(function (result) {
+            _this.$axios.post("addOrderGoods.action", params2).then(function (result) {
+            }).catch(function (error) {
+              alert(error)
+            })
+            //查询订单 根据订单号
+            let id = orderId;
+            _this.$axios.post("queryOrderInfoById.action",id).then(function (result) {
+              console.log("订单详情" + result)
               _this.$router.push('/shoppingsystem/orderBuy')
             }).catch(function (error) {
               alert(error)
