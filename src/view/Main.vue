@@ -224,19 +224,19 @@
     created: function () {
       this.JSONEmp = JSON.parse(sessionStorage.getItem('emp'));
       var emp = this.JSONEmp;
-      this.$notify({
-        title: '信息',
-        dangerouslyUseHTMLString: true,
-        type: 'success',
-        message: '<h3>上午好!'+emp.emp_name+'</h3>',
-        position: 'bottom-right'
-      });
       if (emp == undefined || emp == null || emp == '') {
         this.$router.push("/shoppingsystem/login");
       }else {
         this.getMenuData();
         this.$router.push("/shoppingsystem/home");
       }
+      this.$notify({
+        title: '上午好!',
+        dangerouslyUseHTMLString: true,
+        type: 'success',
+        message: '<label>欢迎您登录'+emp.emp_name+'</label>',
+        position: 'bottom-right'
+      });
     },
   }
 </script>

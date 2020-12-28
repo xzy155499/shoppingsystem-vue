@@ -45,11 +45,6 @@
       label="电话号码"
       width="120">
     </el-table-column>
-    <el-table-column
-      prop="account"
-      label="账号"
-      width="120">
-    </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button-group>
@@ -98,9 +93,6 @@
         <el-form-item label="联系电话" :label-width="formLabelWidth">
           <el-input v-model="addUserForm.phone" placeholder="输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item label="用户账号" :label-width="formLabelWidth">
-          <el-input v-model="addUserForm.account" placeholder="输入用户账号"></el-input>
-        </el-form-item>
         <el-form-item label="密码" prop="pass" :label-width="formLabelWidth">
           <el-input type="password" v-model="addUserForm.pass" autocomplete="off"></el-input>
         </el-form-item>
@@ -138,9 +130,6 @@
         <el-form-item label="联系电话" :label-width="formLabelWidth">
           <el-input v-model="editUserForm.phone" placeholder="输入联系电话"></el-input>
         </el-form-item>
-        <el-form-item label="用户账号" :label-width="formLabelWidth">
-          <el-input v-model="editUserForm.account" placeholder="输入用户账号"></el-input>
-        </el-form-item>
         <el-form-item label="密码" prop="pass" :label-width="formLabelWidth">
           <el-input v-model="editUserForm.pass" autocomplete="off"></el-input>
         </el-form-item>
@@ -176,7 +165,6 @@
               birth_date:"",
               id_number:"",
               phone:"",
-              account:"",
               pass:""
             },
             editUserForm: {
@@ -187,7 +175,6 @@
               birth_date:"",
               id_number:"",
               phone:"",
-              account:"",
               pass:""
             }
           }
@@ -208,7 +195,6 @@
               _this.editUserForm.birth_date=result.data.birth_date;
               _this.editUserForm.id_number=result.data.id_number;
               _this.editUserForm.phone=result.data.phone;
-              _this.editUserForm.account=result.data.account;
               _this.editUserForm.pass=result.data.pass;
               _this.editUserForm.user_id=result.data.user_id;
             }).catch(function (error) {
@@ -225,7 +211,6 @@
             param.append("birth_date",_this.editUserForm.birth_date);
             param.append("id_number",_this.editUserForm.id_number);
             param.append("phone",_this.editUserForm.phone);
-            param.append("account",_this.editUserForm.account);
             param.append("pass",_this.editUserForm.pass);
             this.$axios.post("editUser.action",param).then(function (result) {
 
@@ -236,7 +221,7 @@
             _this.getuserManageData();
           },
           userDelete( row) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
               type: 'warning',
@@ -303,7 +288,6 @@
             param.append("birth_date",_this.addUserForm.birth_date);
             param.append("id_number",_this.addUserForm.id_number);
             param.append("phone",_this.addUserForm.phone);
-            param.append("account",_this.addUserForm.account);
             param.append("pass",_this.addUserForm.pass);
             this.$axios.post("addUsers.action",param).then(function (result) {
               if(result.data==1){

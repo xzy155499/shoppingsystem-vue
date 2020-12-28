@@ -53,8 +53,8 @@
 
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" plain circle round @click="showWarehouse(scope.row)">同意出库</el-button>
-        <el-button size="mini" plain circle round @click="showWarehouse(scope.row)">拒绝出库</el-button>
+        <el-button size="mini" type="success" plain @click="showWarehouse(scope.row)">同意出库</el-button>
+        <el-button size="mini" type="danger" plain @click="showWarehouse(scope.row)">拒绝出库</el-button>
       </template>
     </el-table-column>
   </el-table>

@@ -22,9 +22,9 @@
       </el-table-column>
       <el-table-column prop="gName" label="商品名称">
       </el-table-column>
-      <el-table-column prop="gPriceInto" label="商品进货价">
+      <el-table-column width="100" prop="gPriceInto" label="商品进货价">
       </el-table-column>
-      <el-table-column prop="gPriceOut" label="商品出售价">
+      <el-table-column width="100" prop="gPriceOut" label="商品出售价">
       </el-table-column>
       <el-table-column prop="gDescribe" label="商品描述">
       </el-table-column>
@@ -32,17 +32,17 @@
       </el-table-column>
       <el-table-column prop="type" label="商品类型">
       </el-table-column>
-      <el-table-column prop="gNum" label="商品销量">
+      <el-table-column width="100" prop="gNum" label="商品销量">
       </el-table-column>
       <el-table-column prop="gFinalSales" label="商品最后一次销售时间">
       </el-table-column>
       <el-table-column prop="gFinalPurchase" label="商品最后一次进货时间">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column width="250" label="操作">
         <template slot-scope="scope">
-        <el-button type="warning" icon="el-icon-edit" plain circle @click=updShow(scope.row)></el-button>
-        <el-button type="danger" icon="el-icon-delete" plain circle @click="del(scope.row.gId)"></el-button>
-        <el-button type="danger"  plain circle @click="showUpdImg(scope.row)">修改图片</el-button>
+          <el-button size="mini" type="warning" plain @click=updShow(scope.row)>编辑</el-button>
+          <el-button size="mini" type="danger" plain @click="del(scope.row.gId)">删除</el-button>
+          <el-button size="mini" type="info" plain @click="showUpdImg(scope.row)">修改图片</el-button>
         </template>
       </el-table-column>
     </el-table>

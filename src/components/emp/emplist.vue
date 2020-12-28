@@ -436,10 +436,8 @@
             //将需要提交的表单数据 快速组装为H5定义的类型FormData
             Object.keys(_this.addEmpForm).forEach((key) => {
               formData.append(key, _this.addEmpForm[key]);
-              console.log(key, _this.addEmpForm[key])
             });
             formData.append("file", _this.file.raw);
-            console.log(_this.file.raw)
             this.$axios({
               method: 'post',
               url: 'addEmp.action',
